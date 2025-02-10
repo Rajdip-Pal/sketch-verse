@@ -1,9 +1,11 @@
 import React from 'react'
 import './styles/App.css'
+import Home from './pages/Home'
+
 const App = () => {
   return (
-    <div className='text-red-700 font-semibold text-6xl text-center '>
-      hello world
+    <div id="cover" className='w-screen h-screen'>
+      <Home />
     </div>
   )
 }
