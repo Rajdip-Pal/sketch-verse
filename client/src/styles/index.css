@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Kotta+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kotta+One&family=Kumar+One&display=swap');
+
+
 body{
     background-image: url("../assets/images/bg.png");
     background-size: cover;
