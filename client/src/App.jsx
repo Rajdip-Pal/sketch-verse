@@ -1,13 +1,18 @@
-import React from 'react'
-import './styles/App.css'
-import Home from './pages/Home'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import * as WebPages from './pages/pages'
+
+import './styles/index.css';
 
 const App = () => {
-  return (
-    <div id="cover" className='w-screen h-screen'>
-      <Home />
-    </div>
-  )
-}
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<WebPages.Home />} />
+            </Routes>
+        </Router>
+    );
+};
 
-export default App
+export default App;
