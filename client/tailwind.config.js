@@ -7,6 +7,7 @@ module.exports = {
     extend: {fontFamily: {
       kotta: ['Kotta One', 'serif'],
       kumar: ['Kumar One', 'cursive'],
+      nixie: ['Nixie One', 'cursive'],
     },
   },
   },
