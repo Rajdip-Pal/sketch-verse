@@ -16,6 +16,7 @@ const App = () => {
                 <Route path="/whiteboard" element={<WebPages.Board />} />
                 <Route path="/game" element={<WebPages.Game />} />
                 <Route path="/singledraw" element={<WebPages.Singledraw />} />
+                <Route path="/multidraw" element={<WebPages.Multidraw />} />
                 
             </Routes>
         </Router>
