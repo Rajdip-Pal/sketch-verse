@@ -5,6 +5,7 @@ import Contact from './Contact';
 import Board from './Board';
 import About from './About';
 import Singledraw from './Singledraw';
+import Multidraw from './Multidraw';
 
 
-export { Home, Start, Game, Contact, Board, About, Singledraw};
+export { Home, Start, Game, Contact, Board, About, Singledraw, Multidraw};
