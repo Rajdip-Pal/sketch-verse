@@ -15,7 +15,7 @@ export default function Card({ image, imageAbout, heading, content, buttonField,
                 </div>
                 <div className="mt-auto flex justify-center">
                     <Link to={buttonLink}>
-                        <button className="w-[50%] mb-5 px-10 py-2 text-wrap font-kotta text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
+                        <button className="w-[100%] mb-5 px-10 py-2 text-wrap font-kotta text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
                             {buttonField}
                         </button>
                     </Link>
