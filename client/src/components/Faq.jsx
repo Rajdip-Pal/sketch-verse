@@ -6,10 +6,13 @@ export default function Faq() {
 
     const faqs = [
         { question: 'How many players can join at max during the game?', answer: 'The game can be played with 10 players at a time.' },
-        { question: 'Kya aapko mera future dikh raha hai?', answer: 'nahi na mujhe bhi nahi dikh raaha ' },
-        { question: 'kya rajdip ko iss baar internal mai chinu room se nikal dega ?', answer: 'ji Haan !! dooston koi shaq ismai' },
-        { question: 'kya ECE wale chutiya hai ?', answer: 'JI ! haaan aap sahi keh rahe hai !!' },
-        { question: 'melody itni chocolaty kyun hoti hai', answer: 'kya pata bhai' },
+        // { question: 'Kya aapko mera future dikh raha hai?', answer: 'nahi na mujhe bhi nahi dikh raaha ' },
+        // { question: 'kya rajdip ko iss baar internal mai chinu room se nikal dega ?', answer: 'ji Haan !! dooston koi shaq ismai' },
+        // { question: 'kya ECE wale chutiya hai ?', answer: 'JI ! haaan aap sahi keh rahe hai !!' },
+        // { question: 'melody itni chocolaty kyun hoti hai', answer: 'kya pata bhai' },
+
+        // generate more questions and answers here
+        { question: '', answer: '' },
     ];
 
     return (
@@ -25,8 +28,7 @@ export default function Faq() {
                             className="mt-2 text-gray-300"
                             initial={{ opacity: 0, height: 0 }}
                             animate={expandedFAQ === index ? { opacity: 1, height: 'auto' } : { opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
-                        >
+                            transition={{ duration: 0.3 }}>
                             {faq.answer}
                         </motion.p>
                     </motion.div>
