@@ -53,7 +53,7 @@ export default function Start() {
                 <div className="text-2xl text-center">
                     <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-kumar">Sketch Verse</motion.h1>
 
-                    <motion.div className="md:flex gap-6" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+                    <motion.div className="md:flex justify-center gap-6" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
                         {buildCards(cardData)}
                     </motion.div>
                 </div>
