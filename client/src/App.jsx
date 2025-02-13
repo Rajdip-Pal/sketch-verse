@@ -15,6 +15,8 @@ const App = () => {
                 <Route path="/contact" element={<WebPages.Contact />} />
                 <Route path="/whiteboard" element={<WebPages.Board />} />
                 <Route path="/game" element={<WebPages.Game />} />
+                <Route path="/singledraw" element={<WebPages.Singledraw />} />
+                
             </Routes>
         </Router>
     );
