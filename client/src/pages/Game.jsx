@@ -1,6 +1,8 @@
 import React from 'react';
-import * as Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+
+import * as Navbar from '../components/Navbar';
+import GameCard from '../components/GameCard';
 
 import luffy from '../assets/images/luffy.jpg';
 import zoro from '../assets/images/zoro.jpeg';
@@ -13,78 +15,84 @@ import whitebeard from '../assets/images/Whitebeard.jpg';
 import ace from '../assets/images/ace.jpeg';
 import shanks from '../assets/images/shanks.jpeg';
 import akainu from '../assets/images/akainu.jpg';
+import pikachu from '../assets/images/pikachu.jpeg';
 
-const images = [luffy, zoro, sanji, nami, chopper, robin, roger, whitebeard, ace, shanks, akainu];
-
-const languages = [
-    { value: 'English', label: 'English' },
-    { value: 'Spanish', label: 'Spanish' },
-    { value: 'French', label: 'French' },
-    { value: 'German', label: 'German' },
-    { value: 'Italian', label: 'Italian' },
-];
+const images = [luffy, zoro, sanji, nami, chopper, robin, roger, whitebeard, ace, shanks, akainu, pikachu];
 
 export default function Game() {
     document.title = 'Sketch Verse | Game';
 
     const [username, setUsername] = React.useState('');
-    const [language, setLanguage] = React.useState(languages[0].value);
     const [avatar, setAvatar] = React.useState(luffy);
 
-    const buildAvatars = function (images) {
-        return Array.from(images).map((image, index) => (
+    const buildAvatars = function (images, size) {
+        let avatars = Array.from(images).map((image, index) => (
             <button
                 className="border-2 border-transparent"
                 onClick={() => {
-                    document.querySelectorAll('.avatars').forEach(avatar => avatar.classList.replace('border-blue-500', 'border-transparent'));
-                    document.getElementById(`avatar-${index}`).classList.replace('border-transparent', 'border-blue-500');
+                    document.querySelectorAll('.avatars').forEach(avatar => avatar.classList.replace('border-lime-500', 'border-transparent'));
+                    document.getElementById(`avatar-${index}`).classList.replace('border-transparent', 'border-lime-500');
                     setAvatar(document.getElementById(`avatar-${index}`).src);
                 }}>
-                <img id={`avatar-${index}`} className="avatars m-1 border-2 border-transparent rounded" src={image} alt="Avatar" key={index} width={50} height={50} />
+                <img id={`avatar-${index}`} className="avatars m-1 border-4 border-transparent rounded-xl" src={image} alt="Avatar" key={index} width={100} height={100} />
             </button>
         ));
-    };
 
-    const buildLanguageOptions = function (language_options) {
-        return language_options.map((option, index) => (
-            <option key={index} value={option.value}>
-                {option.label}
-            </option>
-        ));
+        const result = [];
+        for (let i = 0; i < avatars.length; i += size) {
+            result.push(<div className="flex justify-center">{avatars.slice(i, i + size)}</div>);
+        }
+
+        return result;
     };
 
     return (
         <React.Fragment>
             <Navbar.FixedTopRight path="/" children={'Sketch Verse'} />
-            <div>
-                <div>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={e => {
-                            setUsername(e.target.value);
-                        }}
-                        placeholder="Username"
-                    />
-                    <select
-                        value={language}
-                        onChange={e => {
-                            setLanguage(e.target.value);
-                        }}>
-                        {buildLanguageOptions(languages)}
-                    </select>
-                </div>
-                <div>
-                    <div className="w-90 overflow-hidden">
-                        <div className="inline-flex w-[80%]">{buildAvatars(images)}</div>
+            <div className="flex justify-center items-center align-middles h-[80%] w-full ">
+                <div className="flex flex-col items-center justify-around h-[60%] w-[50%] border-4 border-lime-600 rounded-3xl">
+                    <h3 className="text-center text-lime-500 font-bold text-3xl">Choose Avatar :</h3>
+                    <div className="flex justify-center align-middle items-center mt-3 md-5">
+                        <div className="flex flex-col justify-center w-[80%]">{buildAvatars(images, 7)}</div>
+                    </div>
+                    <div className="flex items-center justify-center my-5 mx-5">
+                        <input
+                            id="username"
+                            className="w-[80%] focus:outline-none py-3 px-8 text-center transition-none bg-transparent border-b-2 border-lime-500 text-lime-500 font-bold placeholder:font-bold placeholder:text-lime-300 text-2xl mx-5"
+                            type="text"
+                            value={username}
+                            onSelect={() => {
+                                document.querySelectorAll('.username').forEach(username => username.classList.replace('border-lime-500', 'border-transparent'));
+                                document.getElementById('username').placeholder = username === '' ? 'Username' : '';
+                            }}
+                            onChange={e => {
+                                setUsername(e.target.value);
+                            }}
+                            placeholder="Username"
+                            autoComplete="off"
+                            autofill="off"
+                            spellCheck="false"
+                        />
+                    </div>
+
+                    <div className="flex justify-center">
+                        <GameCard className="md:min-w-[70%]" image={avatar} userName={username} usersPoints={0} />
+                    </div>
+
+                    <div className="flex justify-center my-5 ">
+                        <Link to="/game" className="text-center m-1">
+                            <button className="text-wrap mb-5 px-8 py-2 font-kotta text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
+                                Join Game
+                            </button>
+                        </Link>
+                        <span className="m-3 text-lime-500 text-center text-lg font-kotta"> Or </span>
+                        <Link to="/lobby" className="text-center m-1">
+                            <button className="text-wrap mb-5 px-8 py-2  font-kotta text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
+                                Create Room
+                            </button>
+                        </Link>
                     </div>
                 </div>
-                <div>
-                    <button>Join Game</button>
-                    <button>Create Room</button>
-                </div>
-
-                <img className="avatars m-1 border-2 border-transparent rounded" src={avatar} alt="Avatar" width={50} height={50} />
             </div>
         </React.Fragment>
     );
