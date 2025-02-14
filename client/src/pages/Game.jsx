@@ -4,20 +4,22 @@ import { Link } from 'react-router-dom';
 import * as Navbar from '../components/Navbar';
 import GameCard from '../components/GameCard';
 
-import luffy from '../assets/images/luffy.jpg';
-import zoro from '../assets/images/zoro.jpeg';
-import sanji from '../assets/images/sanji.jpg';
-import nami from '../assets/images/nami.jpg';
-import chopper from '../assets/images/chopper.jpeg';
-import robin from '../assets/images/Robin.jpg';
-import roger from '../assets/images/Roger.jpg';
-import whitebeard from '../assets/images/Whitebeard.jpg';
-import ace from '../assets/images/ace.jpeg';
-import shanks from '../assets/images/shanks.jpeg';
-import akainu from '../assets/images/akainu.jpg';
-import pikachu from '../assets/images/pikachu.jpeg';
+import luffy from '../assets/icons/luffy.jpg';
+import zoro from '../assets/icons/zoro.jpeg';
+import sanji from '../assets/icons/sanji.jpg';
+import nami from '../assets/icons/nami.jpg';
+import chopper from '../assets/icons/chopper.jpeg';
+import robin from '../assets/icons/Robin.jpg';
+import roger from '../assets/icons/Roger.jpg';
+import whitebeard from '../assets/icons/Whitebeard.jpg';
+import ace from '../assets/icons/ace.jpeg';
+import shanks from '../assets/icons/shanks.jpeg';
+import akainu from '../assets/icons/akainu.jpg';
+import pikachu from '../assets/icons/pikachu.jpeg';
+import guts from '../assets/icons/guts.jpeg';
+import vagabond from '../assets/icons/vagabond.jpeg';
 
-const images = [luffy, zoro, sanji, nami, chopper, robin, roger, whitebeard, ace, shanks, akainu, pikachu];
+const images = [luffy, zoro, sanji, nami, chopper, robin, roger, whitebeard, ace, shanks, akainu, pikachu, guts, vagabond];
 
 export default function Game() {
     document.title = 'Sketch Verse | Game';
@@ -50,8 +52,8 @@ export default function Game() {
         <React.Fragment>
             <Navbar.FixedTopRight path="/" children={'Sketch Verse'} />
             <div className="flex justify-center items-center align-middles h-[80%] w-full ">
-                <div className="flex flex-col items-center justify-around h-[60%] w-[50%] border-4 border-lime-600 rounded-3xl">
-                    <h3 className="text-center text-lime-500 font-bold text-3xl">Choose Avatar :</h3>
+                <div className="flex flex-col items-center justify-around h-[60%] w-[50%] border-2 border-lime-500 rounded-3xl backdrop-blur-xl shadow-2xl">
+                    <h3 className="text-center text-lime-500 font-bold text-3xl mt-5">Choose Avatar :</h3>
                     <div className="flex justify-center align-middle items-center mt-3 md-5">
                         <div className="flex flex-col justify-center w-[80%]">{buildAvatars(images, 7)}</div>
                     </div>
@@ -76,7 +78,7 @@ export default function Game() {
                     </div>
 
                     <div className="flex justify-center">
-                        <GameCard className="md:min-w-[70%]" image={avatar} userName={username} usersPoints={0} />
+                        <GameCard className="md:min-w-[70%]" image={avatar} photoWidth={80} photoHeight={80} userName={username} usersPoints={0} />
                     </div>
 
                     <div className="flex justify-center my-5 ">
