@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export default async function Card({ image, imageAbout, imageWidth, heading, content, buttonField, buttonLink }) {
+export default function Card({ image, imageAbout, imageWidth, heading, content, buttonField, buttonLink }) {
     return (
         <React.Fragment>
             <div className="backdrop-blur-xl flex flex-col justify-center border-4 border-lime-500 rounded-xl p-5 md:w-1/2 lg:w-1/2 xl:w-1/4 m-10  shadow-2xl shadow-black">

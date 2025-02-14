@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-import Faq from '../components/Faq';
-
 function Home() {
     document.title = 'Sketch Verse';
 
@@ -32,7 +30,6 @@ function Home() {
                     </Link>
                 </div>
             </div>
-            <Faq />
         </React.Fragment>
     );
 }

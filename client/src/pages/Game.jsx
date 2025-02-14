@@ -77,8 +77,8 @@ export default function Game() {
                         />
                     </div>
 
-                    <div className="flex justify-center">
-                        <GameCard className="md:min-w-[70%]" image={avatar} photoWidth={80} photoHeight={80} userName={username} usersPoints={0} />
+                    <div className="flex justify-center w-full">
+                        <GameCard className="" image={avatar} photoWidth={80} photoHeight={80} userName={username} usersPoints={0} />
                     </div>
 
                     <div className="flex justify-center my-5 ">
