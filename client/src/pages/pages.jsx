@@ -3,9 +3,9 @@ import Start from './Start';
 import Game from './Game';
 import Contact from './Contact';
 import Board from './Board';
-import About from './About';
+import About from './AboutUs';
 import Singledraw from './Singledraw';
 import Multidraw from './Multidraw';
+import AboutUs from './AboutUs';
 
-
-export { Home, Start, Game, Contact, Board, About, Singledraw, Multidraw};
+export { Home, Start, Game, Contact, Board, About, Singledraw, Multidraw, AboutUs };
