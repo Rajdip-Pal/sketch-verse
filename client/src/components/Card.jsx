@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export default function Card({ image, imageAbout, heading, content, buttonField, buttonLink }) {
+export default async function Card({ image, imageAbout, imageWidth, heading, content, buttonField, buttonLink }) {
     return (
         <React.Fragment>
-            <div className="flex flex-col justify-center border-4 border-lime-500 rounded-xl p-5 md:w-1/2 lg:w-1/2 xl:w-1/4 m-10">
+            <div className="backdrop-blur-xl flex flex-col justify-center border-4 border-lime-500 rounded-xl p-5 md:w-1/2 lg:w-1/2 xl:w-1/4 m-10  shadow-2xl shadow-black">
                 <div className="flex justify-center my-8 h-[50%]">
-                    <img className="rounded-xl w-[90%]  border-4 border-lime-500" src={image} alt={`${imageAbout}`} />
+                    <img className="rounded-xl w-[90%]  border-4 border-lime-500" src={image} alt={`${imageAbout}`} width={imageWidth} />
                 </div>
                 <div className="align-super">
                     <h1 className="text-3xl text-lime-500 font-bold font-kumar">{heading}</h1>
@@ -28,6 +28,7 @@ export default function Card({ image, imageAbout, heading, content, buttonField,
 Card.propTypes = {
     image: PropTypes.string.isRequired,
     imageAbout: PropTypes.string,
+    imageWidth: PropTypes.number,
     heading: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired | PropTypes.element.isRequired,
     buttonField: PropTypes.string.isRequired,
