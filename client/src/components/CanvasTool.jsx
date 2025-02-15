@@ -1,25 +1,34 @@
 import React from "react";
+import eraser from '../assets/images/eraser.png';
+import pencil from '../assets/images/pencil.png';
+import Undo from '../assets/images/undo.png';
+import Redo from '../assets/images/redo.png';
+import reset from '../assets/images/reset.png';
+
 
 const CanvasTool = ({ tool, setTool, penColor, setPenColor, penWidth, setPenWidth, undo, redo, resetCanvas }) => {
   return (
-    <div className="absolute top-2 flex gap-3 bg-gray-200 p-2 rounded-lg shadow-md">
+    <div className="absolute mt-5 top-2 flex gap-3 bg-lime-500 p-2 rounded-lg shadow-md">
       <button 
+      title="Pen"
         onClick={() => setTool("pen")} 
-        className={`px-3 py-1 rounded ${tool === "pen" ? "bg-blue-700" : "bg-blue-500"} text-white`}
+        className={`px-3 py-1 rounded ${tool === "pen" ? "bg-lime-600" : ""} active:scale-90 `}
       >
-        Pen
+        <img src={pencil} className="w-6 h-6" />
       </button>
       <button 
+        title="eraser"
         onClick={() => setTool("eraser")} 
-        className={`px-3 py-1 rounded ${tool === "eraser" ? "bg-gray-700" : "bg-gray-500"} text-white`}
+        className={`px-3 py-1 rounded ${tool === "eraser" ? "bg-lime-600" : ""} active:scale-90 `}
       >
-        Eraser
+        <img src={eraser} className="w-6 h-6" />
       </button>
-      <input 
-        type="color" 
-        value={penColor} 
-        onChange={(e) => setPenColor(e.target.value)} 
-        className="cursor-pointer"
+      <input
+        title="color"
+        type="color"
+        value={penColor}
+        onChange={(e) => setPenColor(e.target.value)}
+        className="cursor-pointer rounded-full w-12 h-12 border-none p-0 appearance-none bg-transparent"
       />
       <input 
         type="range" 
@@ -29,9 +38,15 @@ const CanvasTool = ({ tool, setTool, penColor, setPenColor, penWidth, setPenWidt
         onChange={(e) => setPenWidth(e.target.value)} 
         className="cursor-pointer"
       />
-      <button onClick={undo} className="px-3 py-1 bg-yellow-500 text-white rounded">Undo</button>
-      <button onClick={redo} className="px-3 py-1 bg-green-500 text-white rounded">Redo</button>
-      <button onClick={resetCanvas} className="px-3 py-1 bg-red-500 text-white rounded">Reset</button>
+      <button title="undo" onClick={undo} className="px-3 py-1 active:scale-90 rounded">
+        <img src={Undo} className="w-6 h-6" />
+      </button>
+      <button title="redo" onClick={redo} className="px-3 py-1 active:scale-90 rounded">
+        <img src={Redo} className="w-6 h-6" />
+      </button>
+      <button title="Reset" onClick={resetCanvas} className="px-3 py-1 active:scale-90  rounded">
+        <img src={reset} className="w-6 h-6" />
+      </button>
     </div>
   );
 };
