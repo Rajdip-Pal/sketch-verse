@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Kotta+One&family=Kumar+One&family=Nixie+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Marker+Hatch&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Maze&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Eater&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Puddles&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Kranky&display=swap'); /*final thing */
+ @import url('https://fonts.googleapis.com/css2?family=Frijole&display=swap');
+
 
 body {
     background-image: url('../assets/images/bg.png');

@@ -52,7 +52,7 @@ export default function Start() {
         <React.Fragment>
             <div className="flex items-center justify-center text-white relative">
                 <div className="text-2xl text-center">
-                    <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-kumar">Sketch Verse</motion.h1>
+                    <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-eater">Sketch Verse</motion.h1>
 
                     <motion.div
                         className="md:flex justify-center gap-6 p-6 rounded-lg"

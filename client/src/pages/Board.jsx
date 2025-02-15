@@ -47,7 +47,7 @@ export default function Board() {
         <React.Fragment>
             <div className="flex items-center justify-center h-screen text-white relative">
                 <div className="text-2xl text-center">
-                    <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-kumar">Sketch Verse</motion.h1>
+                    <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-eater">Sketch Verse</motion.h1>
                     <motion.div className="md:flex justify-center gap-6" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
                         {buildCards(cardData)}
                     </motion.div>
