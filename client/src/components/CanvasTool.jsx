@@ -14,14 +14,14 @@ const CanvasTool = ({ tool, setTool, penColor, setPenColor, penWidth, setPenWidt
         onClick={() => setTool("pen")} 
         className={`px-3 py-1 rounded ${tool === "pen" ? "bg-lime-600" : ""} active:scale-90 `}
       >
-        <img src={pencil} className="w-6 h-6" />
+        <img src={pencil} alt="pencil" className="w-6 h-6" />
       </button>
       <button 
         title="eraser"
         onClick={() => setTool("eraser")} 
         className={`px-3 py-1 rounded ${tool === "eraser" ? "bg-lime-600" : ""} active:scale-90 `}
       >
-        <img src={eraser} className="w-6 h-6" />
+        <img src={eraser} alt="eraser" className="w-6 h-6" />
       </button>
       <input
         title="color"
@@ -39,13 +39,13 @@ const CanvasTool = ({ tool, setTool, penColor, setPenColor, penWidth, setPenWidt
         className="cursor-pointer"
       />
       <button title="undo" onClick={undo} className="px-3 py-1 active:scale-90 rounded">
-        <img src={Undo} className="w-6 h-6" />
+        <img src={Undo} alt="undo" className="w-6 h-6" />
       </button>
       <button title="redo" onClick={redo} className="px-3 py-1 active:scale-90 rounded">
-        <img src={Redo} className="w-6 h-6" />
+        <img src={Redo} alt="redo" className="w-6 h-6" />
       </button>
       <button title="Reset" onClick={resetCanvas} className="px-3 py-1 active:scale-90  rounded">
-        <img src={reset} className="w-6 h-6" />
+        <img src={reset} alt="result" className="w-6 h-6" />
       </button>
     </div>
   );
