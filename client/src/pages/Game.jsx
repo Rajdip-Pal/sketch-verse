@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import * as Navbar from '../components/Navbar';
 import GameCard from '../components/GameCard';
@@ -51,8 +52,17 @@ export default function Game() {
     return (
         <React.Fragment>
             <Navbar.FixedTopRight path="/" children={'Sketch Verse'} />
-            <div className="flex justify-center items-center align-middles h-[80%] w-full ">
-                <div className="flex flex-col items-center justify-around h-[60%] w-[50%] border-2 border-lime-500 rounded-3xl backdrop-blur-xl shadow-2xl">
+            <motion.div
+                className="flex justify-center items-center align-middles h-[80%] w-full "
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}>
+                <motion.div
+                    className="flex flex-col items-center justify-around h-[60%] w-[50%] border-2 border-lime-500 rounded-3xl shadow-2xl shadow-black"
+                    initial={{ backdropFilter: 'blur(0px)' }}
+                    animate={{ backdropFilter: 'blur(10px)' }}
+                    transition={{ duration: 2.5 }}
+                    whileHover={{ scale: 1.05, transition: { duration: 0.5 } }}>
                     <h3 className="text-center text-lime-500 font-bold text-3xl mt-5">Choose Avatar :</h3>
                     <div className="flex justify-center align-middle items-center mt-3 md-5">
                         <div className="flex flex-col justify-center w-[80%]">{buildAvatars(images, 7)}</div>
@@ -60,7 +70,7 @@ export default function Game() {
                     <div className="flex items-center justify-center my-5 mx-5">
                         <input
                             id="username"
-                            className="w-[80%] focus:outline-none py-3 px-8 text-center transition-none bg-transparent border-b-2 border-lime-500 text-lime-500 font-bold placeholder:font-bold placeholder:text-lime-300 text-2xl mx-5"
+                            className="w-[90%] focus:outline-none py-3 px-8 text-center transition-none bg-transparent border-b-2 border-lime-500 text-lime-500 font-bold placeholder:font-bold placeholder:text-lime-300 text-2xl mx-5"
                             type="text"
                             value={username}
                             onSelect={() => {
@@ -94,8 +104,8 @@ export default function Game() {
                             </button>
                         </Link>
                     </div>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
         </React.Fragment>
     );
 }

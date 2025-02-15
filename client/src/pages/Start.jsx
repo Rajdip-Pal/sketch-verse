@@ -14,7 +14,8 @@ export default function Start() {
             img: whiteBoardLogo,
             imageAbout: 'Demo Image',
             heading: 'WhiteBoard',
-            content: `Unleash your creativity and teamwork with a powerful, real-time online whiteboard. Whether you're brainstorming ideas, teaching a class, or working on a project, our intuitive whiteboard makes collaboration easy and efficient.`,
+            content: `Unleash your creativity and teamwork with a powerful, real-time online whiteboard.
+            Whether you're brainstorming ideas, teaching a class, or working on a project, our intuitive whiteboard makes collaboration easy and efficient.`,
             buttonField: 'Explore',
             buttonLink: '/whiteboard',
         },
@@ -49,11 +50,15 @@ export default function Start() {
 
     return (
         <React.Fragment>
-            <div className="flex items-center justify-center h-screen text-white relative">
+            <div className="flex items-center justify-center text-white relative">
                 <div className="text-2xl text-center">
                     <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-kumar">Sketch Verse</motion.h1>
 
-                    <motion.div className="md:flex justify-center gap-6" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+                    <motion.div
+                        className="md:flex justify-center gap-6 p-6 rounded-lg"
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3, ease: 'easeInOut' }}>
                         {buildCards(cardData)}
                     </motion.div>
                 </div>
