@@ -79,8 +79,9 @@ const Canvas = ({ width = 800, height = 500, darkMode = false }) => {
   };
 
   return (
-    <div className="relative flex flex-col items-center w-full">
-      <CanvasTool 
+    <div className="flex justify-center items-center">
+      <div className="absolute top-0">
+        <CanvasTool 
         tool={tool} 
         setTool={setTool} 
         penColor={penColor} 
@@ -90,7 +91,9 @@ const Canvas = ({ width = 800, height = 500, darkMode = false }) => {
         undo={undo} 
         redo={redo} 
         resetCanvas={resetCanvas} 
-      />
+      /></div>
+      
+      <div className="relative flex flex-col items-center w-full">
       <canvas
         ref={canvasRef}
         width={width}
@@ -101,6 +104,7 @@ const Canvas = ({ width = 800, height = 500, darkMode = false }) => {
         onMouseUp={stopDrawing}
         onMouseOut={stopDrawing}
       ></canvas>
+      </div>
     </div>
   );
 };

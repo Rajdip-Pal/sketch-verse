@@ -8,7 +8,7 @@ import reset from '../assets/images/reset.png';
 
 const CanvasTool = ({ tool, setTool, penColor, setPenColor, penWidth, setPenWidth, undo, redo, resetCanvas }) => {
   return (
-    <div className="absolute mt-5 top-2 flex gap-3 bg-lime-500 p-2 rounded-lg shadow-md">
+    <div className=" mt-5 top-2 flex gap-3 bg-lime-500 p-2 rounded-lg shadow-md">
       <button 
       title="Pen"
         onClick={() => setTool("pen")} 

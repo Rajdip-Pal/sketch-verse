@@ -51,7 +51,7 @@ export default function Game() {
 
     return (
         <React.Fragment>
-            <Navbar.FixedTopRight path="/" children={'Sketch Verse'} />
+            <Navbar.FixedTopRight path="/" headline="Sketch Verse" />
             <motion.div
                 className="flex justify-center items-center align-middles h-[80%] w-full "
                 initial={{ opacity: 0, y: 50 }}
