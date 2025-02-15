@@ -22,19 +22,11 @@ export default function Home() {
             {/* For Devices with a screen width of 768px or more */}
             <div className="hidden md:flex items-center justify-center h-screen text-white ">
                 <div className="text-2xl text-center">
-                    {/* Main title with animation */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1 }}
-                        className="text-6xl text-lime-500 font-bold p-3 font-kumar m-2">
-                        Sketch Verse
-                    </motion.div>
+                    <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-eater">Sketch Verse</motion.h1>
 
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                        {/* Tagline with a call-to-action */}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                         <p className="text-5xl pb-7 font-kotta">
-                            <span className="pb-2 block">Sketch, play, and express,</span>
+                            <div className="pb-2">Sketch, play, and express,</div>
                             because creativity has no limits on
                             <span className="text-lime-500 px-2">Sketch verse!</span>
                         </p>
@@ -48,9 +40,7 @@ export default function Home() {
 
                     {/* Start Tour button with link */}
                     <Link to={'/start'}>
-                        <button
-                            className="px-10 py-2 absolute bottom-8 right-8 font-kotta text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90"
-                            aria-label="Start the Sketch Verse tour">
+                        <button className="px-10 py-2 absolute bottom-8 right-8 font-kota text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90">
                             Start tour
                         </button>
                     </Link>
@@ -66,7 +56,7 @@ export default function Home() {
                     transition={{ duration: 0.8 }}
                     className="flex flex-col items-center align-middle justify-center">
                     {/* Tagline with a call-to-action */}
-                    <p className="text-xl pb-7 font-kotta text-white">
+                    <p className="text-xl pb-7 font-kota text-white">
                         Sketch, play, and express, because creativity has no limits on
                         <strong className="text-lime-500 px-2">Sketch verse!</strong>
                     </p>
@@ -81,7 +71,7 @@ export default function Home() {
                 {/* Start Tour button with link */}
                 <Link to={'/start'}>
                     <button
-                        className="px-10 py-2  bottom-8 right-8 font-kotta text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90"
+                        className="px-10 py-2  bottom-8 right-8 font-kota text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90"
                         aria-label="Start the Sketch Verse tour">
                         Start tour
                     </button>

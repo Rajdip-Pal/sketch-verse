@@ -15,12 +15,12 @@ export default function Card({ image, imageAbout, imageWidth, heading, content, 
                 <img className="rounded-xl w-[90%]  border-4 border-lime-500" src={image} alt={`${imageAbout}`} width={imageWidth} />
             </div>
             <div className="align-super">
-                <h1 className="text-3xl text-lime-500 font-bold font-kumar">{heading}</h1>
+                <h1 className="text-3xl text-lime-500 font-bold font-eater">{heading}</h1>
                 <p className="text-left m-4 text-gray-300 text-lg">{content}</p>
             </div>
             <div className="mt-auto flex justify-center">
                 <Link to={buttonLink}>
-                    <button className="w-[100%] mb-5 px-10 py-2 text-wrap font-kotta text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
+                    <button className="w-[100%] mb-5 px-10 py-2 text-wrap font-kota text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
                         {buttonField}
                     </button>
                 </Link>

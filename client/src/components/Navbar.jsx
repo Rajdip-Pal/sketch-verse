@@ -8,13 +8,13 @@ export function FixedTopRight({ path, headline, children }) {
             <nav className="md:flex hidden justify-between absolute w-full top-0 right-0">
                 <div className="p-6 md:mx-5 md:my-5">{children}</div>
                 <Link to={path}>
-                    <div className="xl:text-3xl md:text-2xl text-4xl text-lime-500 font-bold p-6 font-kumar md:mx-5 my-5">{headline}</div>
+                    <div className="xl:text-3xl md:text-2xl text-4xl text-lime-500 font-bold p-6 font-eater md:mx-5 my-5">{headline}</div>
                 </Link>
             </nav>
             <nav className="flex md:hidden justify-between absolute w-full top-0 right-0">
                 <div className="p-6 md:mx-5 md:my-5">{children}</div>
                 <Link to={path}>
-                    <div className="text-lime-500 font-bold p-6 font-kumar md:mx-5 md:my-5">{headline}</div>
+                    <div className="text-lime-500 font-bold p-6 font-eater md:mx-5 md:my-5">{headline}</div>
                 </Link>
             </nav>
         </React.Fragment>
@@ -37,13 +37,13 @@ export function FixedTopLeft({ path, headline, children }) {
         <React.Fragment>
             <nav className="md:flex hidden justify-between absolute w-full top-0 left-0">
                 <Link to={path}>
-                    <div className="xl:text-3xl md:text-2xl text-4xl text-lime-500 font-bold p-6 font-kumar md:mx-5 my-5">{headline}</div>
+                    <div className="xl:text-3xl md:text-2xl text-4xl text-lime-500 font-bold p-6 font-eater md:mx-5 my-5">{headline}</div>
                 </Link>
                 <div className="p-6 md:mx-5 md:my-5">{children}</div>
             </nav>
             <nav className="flex md:hidden justify-between absolute w-full top-0 left-0">
                 <Link to={path}>
-                    <div className="text-lime-500 font-bold p-6 font-kumar md:mx-5 md:my-5">{headline}</div>
+                    <div className="text-lime-500 font-bold p-6 font-eater md:mx-5 md:my-5">{headline}</div>
                 </Link>
                 <div className="p-6 md:mx-5 md:my-5">{children}</div>
             </nav>

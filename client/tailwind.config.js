@@ -4,9 +4,16 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                kotta: ['Kotta One', 'serif'],
+                kota: ['Kotta One', 'serif'],
                 kumar: ['Kumar One', 'cursive'],
                 nixie: ['Nixie One', 'cursive'],
+                rubik: ["Rubik Marker Hatch", "serif"],
+                rubikm: ["Rubik Maze", "serif"],
+                nosifer: ["Nosifer", "serif"],
+                eater: ["Eater", "serif"],
+                RubikPuddles: ["Rubik Puddles", "serif"],
+                Kranky: ["Kranky", "serif"],
+                Frijole: ["Frijole", "serif"],
             },
         },
     },

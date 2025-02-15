@@ -5,20 +5,20 @@ import { motion } from 'framer-motion';
 import * as Navbar from '../components/Navbar';
 import GameCard from '../components/GameCard';
 
-import luffy from '../assets/icons/luffy.jpg';
-import zoro from '../assets/icons/zoro.jpeg';
-import sanji from '../assets/icons/sanji.jpg';
-import nami from '../assets/icons/nami.jpg';
-import chopper from '../assets/icons/chopper.jpeg';
-import robin from '../assets/icons/Robin.jpg';
-import roger from '../assets/icons/Roger.jpg';
-import whitebeard from '../assets/icons/Whitebeard.jpg';
-import ace from '../assets/icons/ace.jpeg';
-import shanks from '../assets/icons/shanks.jpeg';
-import akainu from '../assets/icons/akainu.jpg';
-import pikachu from '../assets/icons/pikachu.jpeg';
-import guts from '../assets/icons/guts.jpeg';
-import vagabond from '../assets/icons/vagabond.jpeg';
+import luffy from '../assets/iconsAvatar/luffy.jpg';
+import zoro from '../assets/iconsAvatar/zoro.jpeg';
+import sanji from '../assets/iconsAvatar/sanji.jpg';
+import nami from '../assets/iconsAvatar/nami.jpg';
+import chopper from '../assets/iconsAvatar/chopper.jpeg';
+import robin from '../assets/iconsAvatar/Robin.jpg';
+import roger from '../assets/iconsAvatar/Roger.jpg';
+import whitebeard from '../assets/iconsAvatar/Whitebeard.jpg';
+import ace from '../assets/iconsAvatar/ace.jpeg';
+import shanks from '../assets/iconsAvatar/shanks.jpeg';
+import akainu from '../assets/iconsAvatar/akainu.jpg';
+import pikachu from '../assets/iconsAvatar/pikachu.jpeg';
+import guts from '../assets/iconsAvatar/guts.jpeg';
+import vagabond from '../assets/iconsAvatar/vagabond.jpeg';
 
 const images = [luffy, zoro, sanji, nami, chopper, robin, roger, whitebeard, ace, shanks, akainu, pikachu, guts, vagabond];
 
@@ -93,13 +93,13 @@ export default function Game() {
 
                     <div className="flex justify-center my-5 ">
                         <Link to="/game" className="text-center m-1">
-                            <button className="text-wrap mb-5 px-8 py-2 font-kotta text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
+                            <button className="text-wrap mb-5 px-8 py-2 font-kota text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
                                 Join Game
                             </button>
                         </Link>
-                        <span className="m-3 text-lime-500 text-center text-lg font-kotta"> Or </span>
+                        <span className="m-3 text-lime-500 text-center text-lg font-kota"> Or </span>
                         <Link to="/lobby" className="text-center m-1">
-                            <button className="text-wrap mb-5 px-8 py-2  font-kotta text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
+                            <button className="text-wrap mb-5 px-8 py-2  font-kota text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
                                 Create Room
                             </button>
                         </Link>
