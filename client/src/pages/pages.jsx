@@ -7,5 +7,6 @@ import About from './AboutUs';
 import Singledraw from './Singledraw';
 import Multidraw from './Multidraw';
 import AboutUs from './AboutUs';
+import GameArina from './GameArina';
 
-export { Home, Start, Game, Contact, Board, About, Singledraw, Multidraw, AboutUs };
+export { Home, Start, Game, Contact, Board, About, Singledraw, Multidraw, AboutUs, GameArina };

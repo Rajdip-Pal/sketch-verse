@@ -24,7 +24,7 @@ export default function Home() {
                 <div className="text-2xl text-center">
                     <motion.h1 className="text-xl 2xl:text-6xl xl:text-4xl text-lime-500 font-bold p-6 font-eater mb-3">Sketch Verse</motion.h1>
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-                        <p className="text-xl 2xl:text-5xl xl:text-3xl pb-7 font-kotta">
+                        <p className="text-xl 2xl:text-5xl xl:text-3xl pb-7 font-kota">
                             <div className="pb-2">Sketch, play, and express,</div>
                             because creativity has no limits on
                             <span className="text-lime-500 px-2">Sketch verse!</span>
