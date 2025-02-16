@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import CanvasTool from './CanvasTool';
 import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 
-const socket = io('http://localhost:5000');
+const socket = io('http://192.168.0.104:5000');
 
 const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode = false }) => {
-    const { roomId } = useParams(); // Get room ID from URL
+    const { roomId } = useParams();
+    const [isDrawing, setIsDrawing] = useState(false);
+    const [penColor, setPenColor] = useState(darkMode ? 'white' : 'black');
+    const [penWidth, setPenWidth] = useState(5);
+    const [history, setHistory] = useState([]);
+    const [step, setStep] = useState(-1);
+    const [tool, setTool] = useState('pen');
 
-    const canvasRef = React.useRef(null);
-    const ctxRef = React.useRef(null);
-    const [isDrawing, setIsDrawing] = React.useState(false);
-    const [penColor, setPenColor] = React.useState(darkMode ? 'white' : 'black');
-    const [penWidth, setPenWidth] = React.useState(5);
-    const [history, setHistory] = React.useState([]);
-    const [step, setStep] = React.useState(-1);
-    const [tool, setTool] = React.useState('pen');
+    const canvasRef = useRef(null);
+    const ctxRef = useRef(null);
+    const lastX = useRef(null);
+    const lastY = useRef(null);
 
-    const restoreCanvas = React.useCallback(
+    const drawLine = (ctx, x1, y1, x2, y2) => {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    };
+
+    const restoreCanvas = useCallback(
         dataURL => {
             const img = new Image();
             img.src = dataURL;
@@ -26,41 +35,39 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
                 ctxRef.current.drawImage(img, 0, 0);
             };
         },
-        [width, height, ctxRef],
+        [width, height],
     );
 
-    React.useEffect(() => {
-        if (!canvasRef.current) {
-            console.error('Canvas reference is null');
-            return;
-        }
+    useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-
-        if (!ctx) {
-            console.error('Unable to get canvas 2D context');
-            return;
-        }
         ctx.fillStyle = darkMode ? 'black' : 'white';
         ctx.fillRect(0, 0, width, height);
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctxRef.current = ctx;
 
-        console.log('Canvas and context initialized successfully', ctxRef.current);
-
-        socket.emit('join-room', roomId); // Join room on mount
+        socket.emit('join-room', roomId);
 
         socket.on('draw', ({ x, y, prevX, prevY, color, width }) => {
             ctxRef.current.strokeStyle = color;
             ctxRef.current.lineWidth = width;
-            drawLine(prevX, prevY, x, y);
+            drawLine(ctxRef.current, prevX, prevY, x, y);
         });
 
         const savedHistory = JSON.parse(localStorage.getItem(`${localStorageId}History`)) || [];
         const savedStep = JSON.parse(localStorage.getItem(`${localStorageId}Step`)) || -1;
         setHistory(savedHistory);
         setStep(savedStep);
+
+        socket.on('reset-canvas', () => {
+            ctxRef.current.fillStyle = darkMode ? 'black' : 'white';
+            ctxRef.current.fillRect(0, 0, width, height);
+            setHistory([]);
+            setStep(-1);
+            localStorage.removeItem(`${localStorageId}History`);
+            localStorage.removeItem(`${localStorageId}Step`);
+        });
 
         if (savedHistory.length > 0 && savedStep >= 0) {
             restoreCanvas(savedHistory[savedStep]);
@@ -76,26 +83,34 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
         ctxRef.current.beginPath();
         ctxRef.current.moveTo(offsetX, offsetY);
         setIsDrawing(true);
-    };
-
-    const drawLine = (x1, y1, x2, y2) => {
-        ctxRef.current.beginPath();
-        ctxRef.current.moveTo(x1, y1);
-        ctxRef.current.lineTo(x2, y2);
-        ctxRef.current.stroke();
-        ctxRef.current.beginPath();
-        ctxRef.current.moveTo(x2, y2);
+        lastX.current = offsetX;
+        lastY.current = offsetY;
     };
 
     const draw = e => {
         if (!isDrawing) return;
         const { offsetX, offsetY } = e.nativeEvent;
-        ctxRef.current.strokeStyle = tool === 'eraser' ? (darkMode ? 'black' : 'white') : penColor;
-        ctxRef.current.lineWidth = tool === 'eraser' ? 20 : penWidth;
-        drawLine(prevX, prevY, offsetX, offsetY);
+        const ctx = ctxRef.current;
 
-        // Emit drawing to others in the same room
-        socket.emit('draw', { roomId, x: offsetX, y: offsetY, prevX, prevY, color: ctxRef.current.strokeStyle, width: ctxRef.current.lineWidth });
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#FFFFFF') : penColor;
+        ctx.lineWidth = tool === 'eraser' ? 20 : penWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        drawLine(ctx, lastX.current, lastY.current, offsetX, offsetY);
+
+        socket.emit('draw', {
+            roomId,
+            x: offsetX,
+            y: offsetY,
+            prevX: lastX.current,
+            prevY: lastY.current,
+            color: ctx.strokeStyle,
+            width: ctx.lineWidth,
+        });
+
+        lastX.current = offsetX;
+        lastY.current = offsetY;
     };
 
     const stopDrawing = () => {
@@ -103,11 +118,12 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
         ctxRef.current.closePath();
         setIsDrawing(false);
         saveHistory();
+        lastX.current = null;
+        lastY.current = null;
     };
 
     const saveHistory = () => {
-        const canvas = canvasRef.current;
-        const newHistory = [...history.slice(0, step + 1), canvas.toDataURL()];
+        const newHistory = [...history.slice(0, step + 1), canvasRef.current.toDataURL()];
         setHistory(newHistory);
         setStep(newHistory.length - 1);
         localStorage.setItem(`${localStorageId}History`, JSON.stringify(newHistory));
@@ -116,22 +132,31 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
 
     const undo = () => {
         if (step <= 0) return;
-        setStep(prev => prev - 1);
+        setStep(step - 1);
         restoreCanvas(history[step - 1]);
     };
 
     const redo = () => {
         if (step >= history.length - 1) return;
-        setStep(prev => prev + 1);
+        setStep(step + 1);
         restoreCanvas(history[step + 1]);
     };
 
     const resetCanvas = () => {
+        // Clear the canvas
         ctxRef.current.fillStyle = darkMode ? 'black' : 'white';
         ctxRef.current.fillRect(0, 0, width, height);
+
+        // Remove drawing history
         setHistory([]);
         setStep(-1);
-        // Clear LocalStorage
+
+        // Emit reset-canvas event to all connected clients
+        socket.emit('reset-canvas', {
+            roomId,
+        });
+
+        // Remove local storage history
         localStorage.removeItem(`${localStorageId}History`);
         localStorage.removeItem(`${localStorageId}Step`);
     };
