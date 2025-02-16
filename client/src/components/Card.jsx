@@ -16,7 +16,7 @@ export default function Card({ image, imageAbout, imageWidth, heading, content, 
             </div>
             <div className="align-super">
                 <h1 className="text-3xl text-center text-lime-500 font-bold font-eater">{heading}</h1>
-                <p className="text-left m-4 text-gray-300 text-s md:text-lg font-kota">{content}</p>
+                <p className="text-left m-4 text-gray-300 text-sm md:text-lg font-kota">{content}</p>
             </div>
 
             <motion.div className="mt-auto flex justify-center">
