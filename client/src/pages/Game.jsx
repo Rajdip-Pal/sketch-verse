@@ -92,7 +92,7 @@ export default function Game() {
                     </div>
 
                     <div className="flex justify-center my-5 ">
-                        <Link to="/game" className="text-center m-1">
+                        <Link to="/gameareana" className="text-center m-1">
                             <button className="text-wrap mb-5 px-8 py-2 font-kota text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90 ">
                                 Join Game
                             </button>
