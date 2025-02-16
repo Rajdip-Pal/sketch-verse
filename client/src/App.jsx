@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { v4 as uuidV4 } from "uuid";
 
 import * as WebPages from './pages/pages';
 
@@ -18,9 +19,10 @@ const App = () => {
                 <Route path="/game" element={<WebPages.Game />} />
                 <Route path="/games" element={<Navigate to="/game" />} />
                 <Route path="/singledraw" element={<WebPages.Singledraw />} />
-                <Route path="/multidraw" element={<WebPages.Multidraw />} />
+                <Route path="/multidraw" element={<Navigate to={`/board/${uuidV4()}`} />} />
                 <Route path="/aboutus" element={<WebPages.AboutUs />} />
                 <Route path="/gameareana" element={<WebPages.GameArina />} />
+                <Route path="/board/:roomId" element={<WebPages.Multidraw />} />
             </Routes>
         </Router>
     );
