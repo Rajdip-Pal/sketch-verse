@@ -20,6 +20,7 @@ const App = () => {
                 <Route path="/singledraw" element={<WebPages.Singledraw />} />
                 <Route path="/multidraw" element={<WebPages.Multidraw />} />
                 <Route path="/aboutus" element={<WebPages.AboutUs />} />
+                <Route path="/gameareana" element={<WebPages.GameArina />} />
             </Routes>
         </Router>
     );
