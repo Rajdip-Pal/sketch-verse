@@ -1,7 +1,13 @@
 import React from 'react';
 import CanvasTool from './CanvasTool';
+import { io } from 'socket.io-client';
+import { useParams } from 'react-router-dom';
+
+const socket = io('http://localhost:5000');
 
 const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode = false }) => {
+    const { roomId } = useParams(); // Get room ID from URL
+
     const canvasRef = React.useRef(null);
     const ctxRef = React.useRef(null);
     const [isDrawing, setIsDrawing] = React.useState(false);
@@ -24,13 +30,32 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
     );
 
     React.useEffect(() => {
+        if (!canvasRef.current) {
+            console.error('Canvas reference is null');
+            return;
+        }
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+            console.error('Unable to get canvas 2D context');
+            return;
+        }
         ctx.fillStyle = darkMode ? 'black' : 'white';
         ctx.fillRect(0, 0, width, height);
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctxRef.current = ctx;
+
+        console.log('Canvas and context initialized successfully', ctxRef.current);
+
+        socket.emit('join-room', roomId); // Join room on mount
+
+        socket.on('draw', ({ x, y, prevX, prevY, color, width }) => {
+            ctxRef.current.strokeStyle = color;
+            ctxRef.current.lineWidth = width;
+            drawLine(prevX, prevY, x, y);
+        });
 
         const savedHistory = JSON.parse(localStorage.getItem(`${localStorageId}History`)) || [];
         const savedStep = JSON.parse(localStorage.getItem(`${localStorageId}Step`)) || -1;
@@ -40,7 +65,11 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
         if (savedHistory.length > 0 && savedStep >= 0) {
             restoreCanvas(savedHistory[savedStep]);
         }
-    }, [darkMode, width, height, localStorageId, restoreCanvas]);
+
+        return () => {
+            socket.off('draw');
+        };
+    }, [darkMode, width, height, roomId, localStorageId, restoreCanvas]);
 
     const startDrawing = e => {
         const { offsetX, offsetY } = e.nativeEvent;
@@ -49,13 +78,24 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
         setIsDrawing(true);
     };
 
+    const drawLine = (x1, y1, x2, y2) => {
+        ctxRef.current.beginPath();
+        ctxRef.current.moveTo(x1, y1);
+        ctxRef.current.lineTo(x2, y2);
+        ctxRef.current.stroke();
+        ctxRef.current.beginPath();
+        ctxRef.current.moveTo(x2, y2);
+    };
+
     const draw = e => {
         if (!isDrawing) return;
         const { offsetX, offsetY } = e.nativeEvent;
         ctxRef.current.strokeStyle = tool === 'eraser' ? (darkMode ? 'black' : 'white') : penColor;
         ctxRef.current.lineWidth = tool === 'eraser' ? 20 : penWidth;
-        ctxRef.current.lineTo(offsetX, offsetY);
-        ctxRef.current.stroke();
+        drawLine(prevX, prevY, offsetX, offsetY);
+
+        // Emit drawing to others in the same room
+        socket.emit('draw', { roomId, x: offsetX, y: offsetY, prevX, prevY, color: ctxRef.current.strokeStyle, width: ctxRef.current.lineWidth });
     };
 
     const stopDrawing = () => {
