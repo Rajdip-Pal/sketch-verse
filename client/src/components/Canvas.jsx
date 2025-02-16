@@ -1,25 +1,53 @@
 import React, { useRef, useState, useEffect } from "react";
 import CanvasTool from "./CanvasTool";
+import { io } from "socket.io-client";
+import { useParams } from "react-router-dom";
+
+const socket = io("http://localhost:5000");
 
 const Canvas = ({ width = 800, height = 500, darkMode = false }) => {
+  const { roomId } = useParams(); // Get room ID from URL
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [penColor, setPenColor] = useState(darkMode ? "white" : "black");
   const [penWidth, setPenWidth] = useState(5);
-  const [history, setHistory] = useState([]);
-  const [step, setStep] = useState(-1);
   const [tool, setTool] = useState("pen");
 
   useEffect(() => {
+    if (!canvasRef.current) {
+      console.error("Canvas reference is null");
+      return;
+    }
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      console.error("Unable to get canvas 2D context");
+      return;
+    }
+
     ctx.fillStyle = darkMode ? "black" : "white";
     ctx.fillRect(0, 0, width, height);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctxRef.current = ctx;
-  }, [darkMode, width, height]);
+
+    console.log("Canvas and context initialized successfully", ctxRef.current);
+
+    socket.emit("join-room", roomId); // Join room on mount
+
+    socket.on("draw", ({ x, y, prevX, prevY, color, width }) => {
+      ctxRef.current.strokeStyle = color;
+      ctxRef.current.lineWidth = width;
+      drawLine(prevX, prevY, x, y);
+    });
+
+    return () => {
+      socket.off("draw");
+    };
+  }, [darkMode, width, height, roomId]);
 
   const startDrawing = (e) => {
     const { offsetX, offsetY } = e.nativeEvent;
@@ -31,51 +59,29 @@ const Canvas = ({ width = 800, height = 500, darkMode = false }) => {
   const draw = (e) => {
     if (!isDrawing) return;
     const { offsetX, offsetY } = e.nativeEvent;
+    const { offsetX: prevX, offsetY: prevY } = ctxRef.current;
+
     ctxRef.current.strokeStyle = tool === "eraser" ? (darkMode ? "black" : "white") : penColor;
     ctxRef.current.lineWidth = tool === "eraser" ? 20 : penWidth;
-    ctxRef.current.lineTo(offsetX, offsetY);
-    ctxRef.current.stroke();
+    drawLine(prevX, prevY, offsetX, offsetY);
+
+    // Emit drawing to others in the same room
+    socket.emit("draw", { roomId, x: offsetX, y: offsetY, prevX, prevY, color: ctxRef.current.strokeStyle, width: ctxRef.current.lineWidth });
   };
 
   const stopDrawing = () => {
     if (!isDrawing) return;
     ctxRef.current.closePath();
     setIsDrawing(false);
-    saveHistory();
   };
 
-  const saveHistory = () => {
-    const canvas = canvasRef.current;
-    setHistory((prev) => [...prev.slice(0, step + 1), canvas.toDataURL()]);
-    setStep((prev) => prev + 1);
-  };
-
-  const undo = () => {
-    if (step <= 0) return;
-    setStep((prev) => prev - 1);
-    restoreCanvas(history[step - 1]);
-  };
-
-  const redo = () => {
-    if (step >= history.length - 1) return;
-    setStep((prev) => prev + 1);
-    restoreCanvas(history[step + 1]);
-  };
-
-  const resetCanvas = () => {
-    ctxRef.current.fillStyle = darkMode ? "black" : "white";
-    ctxRef.current.fillRect(0, 0, width, height);
-    setHistory([]);
-    setStep(-1);
-  };
-
-  const restoreCanvas = (dataURL) => {
-    const img = new Image();
-    img.src = dataURL;
-    img.onload = () => {
-      ctxRef.current.clearRect(0, 0, width, height);
-      ctxRef.current.drawImage(img, 0, 0);
-    };
+  const drawLine = (x1, y1, x2, y2) => {
+    ctxRef.current.beginPath();
+    ctxRef.current.moveTo(x1, y1);
+    ctxRef.current.lineTo(x2, y2);
+    ctxRef.current.stroke();
+    ctxRef.current.beginPath();
+    ctxRef.current.moveTo(x2, y2);
   };
 
   return (
@@ -88,9 +94,6 @@ const Canvas = ({ width = 800, height = 500, darkMode = false }) => {
         setPenColor={setPenColor} 
         penWidth={penWidth} 
         setPenWidth={setPenWidth} 
-        undo={undo} 
-        redo={redo} 
-        resetCanvas={resetCanvas} 
       /></div>
       
       <div className="relative flex flex-col items-center w-full">
