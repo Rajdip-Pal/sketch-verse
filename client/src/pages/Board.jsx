@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-import Card from '../components/Card';
+import * as CardFunctions from '../modules/CardFunctions';
+
 import singleDrawLogo from '../assets/images/singleDrawLogo.png';
 import colaboarationLogo from '../assets/images/colaboarationLogo.png';
 
@@ -27,29 +28,13 @@ export default function Board() {
         },
     ];
 
-    const buildCards = async function (cardData) {
-        return await Promise.all(
-            Array.from(cardData).map((card, index) => (
-                <Card
-                    key={index}
-                    image={card.img}
-                    imageAbout={card.imageAbout}
-                    heading={card.heading}
-                    content={card.content}
-                    buttonField={card.buttonField}
-                    buttonLink={card.buttonLink}
-                />
-            )),
-        );
-    };
-
     return (
         <React.Fragment>
             <div className="flex items-center justify-center h-screen text-white relative">
                 <div className="text-2xl text-center">
                     <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-eater">Sketch Verse</motion.h1>
                     <motion.div className="md:flex justify-center gap-6" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-                        {buildCards(cardData)}
+                        {CardFunctions.buildCards(cardData)}
                     </motion.div>
                 </div>
             </div>
