@@ -44,6 +44,12 @@ export default function Home() {
                             Start tour
                         </button>
                     </Link>
+                    {/* About us button with link */}
+                    <Link to={'/aboutus'}>
+                        <button className="px-10 py-2 absolute bottom-8 left-8 font-kota text-3xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90">
+                            About us
+                        </button>
+                    </Link>
                 </div>
             </div>
 
@@ -73,6 +79,12 @@ export default function Home() {
                         className="px-10 py-2 my-5 font-kota text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90"
                         aria-label="Start the Sketch Verse tour">
                         Start tour
+                    </button>
+                </Link>
+                {/* About us button with link */}
+                <Link to={'/aboutus'}>
+                    <button className="px-10 py-2 my-5 font-kota text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90">
+                        About us
                     </button>
                 </Link>
             </div>
