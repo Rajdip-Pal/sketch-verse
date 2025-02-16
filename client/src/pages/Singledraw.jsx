@@ -1,13 +1,12 @@
-import React from 'react'
-import Canvas from '../components/Canvas'
+import React from 'react';
+import Canvas from '../components/Canvas';
 
-const Singledraw = () => {
-  document.title = 'Sketch Verse | Singledraw';
-  return (
-    <div>
-      <Canvas />
-    </div>
-  )
-}
+export const Singledraw = function () {
+    React.useEffect(() => {
+        document.title = 'Sketch Verse | Draw';
+    });
 
-export default Singledraw
+    return <Canvas localStorageId="singleDraw" className="overflow-hidden" width={window.innerWidth} height={window.innerHeight} />;
+};
+
+export default Singledraw;
