@@ -79,6 +79,7 @@ export default function Home() {
                         aria-label="Start the Sketch Verse tour">
                         Start tour
                     </button>
+
                 </Link>
                 {/* About us button with link */}
                 <Link to={'/aboutus'}>
