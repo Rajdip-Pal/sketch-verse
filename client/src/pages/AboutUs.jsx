@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 
 const contributors = [
     {
-        name: 'suvayu',
+        name: 'Suvayu',
         image: '/contributors/suvhayu.jpg',  // Update with actual image paths
         github: 'https://github.com/SuvayuN',
         linkedin: 'https://www.linkedin.com/in/suvayu-nandy/'
