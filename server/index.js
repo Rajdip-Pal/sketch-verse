@@ -6,10 +6,10 @@ const cors = require("cors");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: {
-    origin: ["http://localhost:3000","http://192.168.0.109:3000"],
-    methods: ["GET", "POST"],
-  },
+    cors: {
+        origin: ['http://localhost:3000', 'http://192.168.0.104:3000', `${process.env.WEB_PAGE}`],
+        methods: ['GET', 'POST'],
+    },
 });
 
 app.use(cors());
