@@ -36,7 +36,7 @@ export default function Game() {
             alert('Please enter a username!');
             return;
         }
-        navigate(`/lobby?username=${username}&avatar=${encodeURIComponent(avatar)}`);
+        navigate(`/lobby?roomId=&username=${username}&avatar=${encodeURIComponent(avatar)}`);
     };
 
     const joinGame = () => {
@@ -44,7 +44,7 @@ export default function Game() {
             alert('Please enter a game ID!');
             return;
         }
-        navigate(`/gamearena?roomId=${gameId}&username=${username}&avatar=${encodeURIComponent(avatar)}`);
+        navigate(`/lobby?roomId=${gameId}&username=${username}&avatar=${encodeURIComponent(avatar)}`);
     };
 
     const buildAvatars = (images, size) => {

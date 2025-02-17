@@ -16,66 +16,94 @@ app.use(cors());
 app.use(express.json());
 
 const rooms = {}; // Stores drawing history and chat messages for each room
-let lobbyPlayers=[];
+const lobbies = {}; // Stores players per gameId
 
 io.on("connection", (socket) => {
-  socket.on("join-room", (roomId) => {
-    socket.join(roomId);
-    console.log(`User ${socket.id} joined room ${roomId}`);
-    
-    if (!rooms[roomId]) {
-      rooms[roomId] = { drawings: [], messages: [] };
-    }
+    console.log(`User connected: ${socket.id}`);
 
-    // Send existing data to the newly joined user
-    socket.emit("load-canvas", rooms[roomId].drawings);
-    socket.emit("load-messages", rooms[roomId].messages);
-  });
+    // Joining a specific game room
+    socket.on("join-lobby", ({ username, avatar, gameId }) => {
+        if (!gameId) return;
 
-  socket.on("draw", ({ roomId, x, y, prevX, prevY, color, width }) => {
-    if (!rooms[roomId]) return;
-    
-    rooms[roomId].drawings.push({ x, y, prevX, prevY, color, width });
-    socket.to(roomId).emit("draw", { x, y, prevX, prevY, color, width });
-  });
+        socket.join(gameId); // Ensures players are in the correct game room
 
-  socket.on("clear-canvas", (roomId) => {
-    if (rooms[roomId]) rooms[roomId].drawings = [];
-    io.to(roomId).emit("clear-canvas");
-  });
+        if (!lobbies[gameId]) {
+            lobbies[gameId] = [];
+        }
 
-  socket.on("send-message", ({ roomId, message, sender }) => {
-    console.log(`Received message${message} from ${sender} in room${roomId}`);
-    if (!roomId) return;
+        const player = { socketId: socket.id, username, avatar, gameId };
 
-    const newMessage = { text: message, sender };
-    
-    // Save message in room
-    rooms[roomId].messages.push(newMessage);
+        if (!lobbies[gameId].some((p) => p.socketId === socket.id)) {
+            lobbies[gameId].push(player);
+        }
 
-    // Broadcast message to all users in the room
-    io.to(roomId).emit("receive-message", newMessage);
-  });
+        console.log(`Player ${username} joined lobby ${gameId}.`);
+        io.to(gameId).emit("update-players", [...lobbies[gameId]]); // Update only relevant room
+    });
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected", socket.id);
-  });
-  socket.on("join-lobby", ({ username, avatar }) => {
-    const player = { id: socket.id, username, avatar };
+    // Handling leaving the lobby
+    socket.on("leave-lobby", ({ socketId, gameId }) => {
+        if (!gameId || !lobbies[gameId]) return;
 
-    // Add the player only if they are not already in the lobby
-    if (!lobbyPlayers.some((p) => p.id === socket.id)) {
-      lobbyPlayers.push(player);
-    }
+        lobbies[gameId] = lobbies[gameId].filter((player) => player.socketId !== socketId);
+        
+        if (lobbies[gameId].length === 0) {
+            delete lobbies[gameId]; // Remove empty rooms
+        }
 
-    console.log(`Player ${username} joined the lobby.`);
-    io.emit("update-players", lobbyPlayers);
-  });
-    // Remove player from the lobby
-    lobbyPlayers = lobbyPlayers.filter((player) => player.id !== socket.id);
-    io.emit("update-players", lobbyPlayers);
-  });
+        io.to(gameId).emit("update-players", lobbies[gameId]); // Update remaining players
+    });
+
+    // Joining a drawing room
+    socket.on("join-room", (roomId) => {
+        socket.join(roomId);
+        console.log(`User ${socket.id} joined room ${roomId}`);
+
+        if (!rooms[roomId]) {
+            rooms[roomId] = { drawings: [], messages: [] };
+        }
+
+        // Send existing data to the newly joined user
+        socket.emit("load-canvas", rooms[roomId].drawings);
+        socket.emit("load-messages", rooms[roomId].messages);
+    });
+
+    // Drawing event
+    socket.on("draw", ({ roomId, x, y, prevX, prevY, color, width }) => {
+        if (!rooms[roomId]) return;
+
+        rooms[roomId].drawings.push({ x, y, prevX, prevY, color, width });
+        socket.to(roomId).emit("draw", { x, y, prevX, prevY, color, width });
+    });
+
+    // Clearing the canvas
+    socket.on("clear-canvas", (roomId) => {
+        if (rooms[roomId]) rooms[roomId].drawings = [];
+        io.to(roomId).emit("clear-canvas");
+    });
+
+    // Sending messages in the chat
+    socket.on("send-message", ({ roomId, message, sender }) => {
+        if (!roomId) return;
+
+        const newMessage = { text: message, sender };
+        rooms[roomId].messages.push(newMessage);
+        io.to(roomId).emit("receive-message", newMessage);
+    });
+
+    // Disconnect handling
+    socket.on("disconnect", () => {
+        console.log(`User disconnected: ${socket.id}`);
+        
+        // Remove player from lobbies
+        for (const gameId in lobbies) {
+            lobbies[gameId] = lobbies[gameId].filter(player => player.socketId !== socket.id);
+            io.to(gameId).emit("update-players", lobbies[gameId]);
+            if (lobbies[gameId].length === 0) delete lobbies[gameId];
+        }
+    });
+});
 
 server.listen(5000, () => {
-  console.log("Server is running on port 5000");
+    console.log("Server is running on port 5000");
 });
