@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import GameCard from '../components/GameCard';
 
-const socket = io("https://sketch-verse.onrender.com", { transports: ["websocket"] }); // Replace with your backend URL
+const socket = io('https://localhost:5000');
 
 const Lobby = () => {
     const navigate = useNavigate();

@@ -3,7 +3,7 @@ import CanvasTool from './CanvasTool';
 import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 
-const socket = io("https://sketch-verse.onrender.com", { transports: ["websocket"] });
+const socket = io(process.env.SERVER);
 
 const Canvas = ({ className, width = 800, height = 500 }) => {
     const { roomId } = useParams();
@@ -118,7 +118,7 @@ const Canvas = ({ className, width = 800, height = 500 }) => {
         const { offsetX, offsetY } = e.nativeEvent;
         const ctx = ctxRef.current;
 
-        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#23272f') : penColor;
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#23272f' : '#000000') : penColor;
         ctx.lineWidth = penWidth;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
@@ -145,7 +145,7 @@ const Canvas = ({ className, width = 800, height = 500 }) => {
         const { x, y } = getTouchPos(canvasRef.current, e);
         const ctx = ctxRef.current;
 
-        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#23272f') : penColor;
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#23272f' : '#000000') : penColor;
         ctx.lineWidth = penWidth;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
