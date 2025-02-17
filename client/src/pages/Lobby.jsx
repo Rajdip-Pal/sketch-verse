@@ -1,23 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import GameCard from "../components/GameCard";
 
 const gameId = Math.floor(100000 + Math.random() * 900000); // Random 6-digit game ID
-const host = { name: "Host_Player", avatar: "../assets/iconsAvatar/luffy.jpg" };
 const players = [
   { name: "Alice", avatar: "../assets/iconsAvatar/zoro.jpeg" },
   { name: "Bob", avatar: "../assets/iconsAvatar/sanji.jpg" },
   { name: "Charlie", avatar: "../assets/iconsAvatar/nami.jpg" },
-  { name: "David", avatar: "../assets/iconsAvatar/chopper.jpeg" },
-  { name: "Eve", avatar: "../assets/iconsAvatar/Robin.jpg" },
-  { name: "Frank", avatar: "../assets/iconsAvatar/Roger.jpg" },
-  { name: "Grace", avatar: "../assets/iconsAvatar/Whitebeard.jpg" },
-  { name: "Hank", avatar: "../assets/iconsAvatar/ace.jpeg" },
-  { name: "Ivy", avatar: "../assets/iconsAvatar/shanks.jpeg" },
   { name: "Jack", avatar: "../assets/iconsAvatar/akainu.jpg" }
 ];
 
 const Lobby = () => {
+  const navigate=useNavigate();
+  const urlParams = new URLSearchParams(window.location.search);
+  const username = urlParams.get("username") || "Anonymous";
+  const avatar = decodeURIComponent(urlParams.get("avatar") || "../assets/iconsAvatar/luffy.jpg");
+
+  const host = { name: username, avatar };
+
+  const createRoom = () => {
+    navigate(`/gamearena?roomId=${gameId}&username=${username}&avatar=${encodeURIComponent(avatar)}`);
+  };
 
     React.useEffect(() => {
         document.title = 'Sketch Verse | Lobby';
@@ -33,11 +36,11 @@ const Lobby = () => {
         ))}
       </div>
       <div className="flex justify-center my-5 ">
-        <Link to="/gamearena" className="text-center m-1">
-          <button className="text-wrap mb-5 px-8 py-2 font-kota text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90">
+        <div className="text-center m-1">
+          <button onClick={createRoom} className="text-wrap mb-5 px-8 py-2 font-kota text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90">
             Start Game
           </button>
-        </Link>
+        </div>
       </div>
     </div>
     </>

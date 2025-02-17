@@ -2,19 +2,12 @@ import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
 const socket = io("http://192.168.0.109:5000");
-const usernames = ["husu"]; // Single predefined username
 
-const Chat = ({}) => {
+const Chat = ({roomId,username,avatar}) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const urlParams = new URLSearchParams(window.location.search);
-  let roomId = urlParams.get("room");
 
   useEffect(() => {  
-  if (!roomId) {
-    roomId = Math.random().toString(36).substr(2, 9);
-    window.history.pushState({}, "", `?room=${roomId}`);
-  }
   console.log("Joining room:", roomId);
   socket.emit("join-room", roomId);  
     socket.on("load-messages", (loadedMessages) => {
@@ -34,7 +27,7 @@ const Chat = ({}) => {
 
   const sendMessage = () => {
     if (input.trim()) {
-      const messageData = { message: input, sender: usernames[0], roomId};
+      const messageData = { message: input, sender: username, roomId};
       socket.emit("send-message", messageData);
       console.log("Sending message:", messageData);
       setMessages([...messages, messageData]);
