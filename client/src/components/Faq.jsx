@@ -16,13 +16,7 @@ export default function Faq() {
     ];
 
     return (
-        <motion.div
-                className="mt-20 w-3/4 mx-auto text-white"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-            >
-        
+        <div className="mt-20 w-3/4 mx-auto text-white">
             <h2 className="text-4xl font-bold text-center mb-6">Frequently Asked Questions</h2>
             <div className="space-y-4">
                 {faqs.map((faq, index) => (
@@ -40,6 +34,6 @@ export default function Faq() {
                     </motion.div>
                 ))}
             </div>
-        </motion.div>
+        </div>
     );
 }
