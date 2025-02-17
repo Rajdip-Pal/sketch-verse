@@ -25,11 +25,12 @@ const Lobby = () => {
   }, []);
 
   useEffect(() => {
+    console.log(`👑 Checking creator join condition: gameId=${gameId}, isCreator=${isCreator}, socketId=${socketId}`);
     if (gameId && isCreator && socketId) {
         console.log(`Creator joining their own lobby: ${gameId}`);
         socket.emit("join-lobby", { username, avatar, gameId });
     }
-}, [gameId, isCreator, socketId]);
+}, [gameId, username, avatar, isCreator, socketId]);
 
 
   useEffect(() => {
@@ -46,19 +47,27 @@ const Lobby = () => {
 
   useEffect(() => {
     if (socketId && gameId) {
+      console.log(`🚀 Emitting join-lobby: gameId=${gameId}, username=${username}`);
       socket.emit("join-lobby", { username, avatar, gameId });
 
       socket.on("update-players", (updatedPlayers) => {
-        setPlayers([...updatedPlayers]); 
-        console.log("Updated Players:", updatedPlayers);
+        console.log("✅ Received updated players list:", updatedPlayers);
+        setPlayers(()=>[...updatedPlayers]); 
       });      
 
+      if (isCreator) {
+        setTimeout(() => {
+            console.log("🔄 Requesting players list manually...");
+            socket.emit("join-lobby", { username, avatar, gameId });
+        }, 500);
+    }
+
       return () => {
-        socket.emit("leave-lobby", { socketId, gameId });
+        socket.emit("leave-isCreatorlobby", { socketId, gameId });
         socket.off("update-players");
       };
     }
-  }, [socketId, gameId, username, avatar]);
+  }, [socketId, gameId, username, avatar, isCreator]);
 
   const createRoom = () => {
     navigate(`/gamearena?&gameId=${gameId}&username=${username}&avatar=${encodeURIComponent(avatar)}`);

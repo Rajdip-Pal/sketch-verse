@@ -36,12 +36,12 @@ io.on("connection", (socket) => {
         if (!lobbies[gameId].some((p) => p.socketId === socket.id)) {
             lobbies[gameId].push(player);
         }
-
-        console.log(`Player ${username} joined lobby ${gameId}.`);
+        console.log(`🎮 Player joined: ${username} (ID: ${socket.id}) in Game ${gameId}`);
+        console.log(`📜 Current Players in ${gameId}:`, lobbies[gameId]);
         io.to(gameId).emit("update-players", [...lobbies[gameId]]); // Update only relevant room
+        io.to(socket.id).emit("update-players", [...lobbies[gameId]]);
     });
-
-    // Handling leaving the lobby
+    
     socket.on("leave-lobby", ({ socketId, gameId }) => {
         if (!gameId || !lobbies[gameId]) return;
 
