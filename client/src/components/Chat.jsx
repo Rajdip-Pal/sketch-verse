@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
 // Initialize socket connection
-const socket = io("http://localhost:5000", { transports: ["websocket"] }); // Ensure websocket transport
+const socket = io("https://sketch-verse-backend.vercel.app", { transports: ["websocket"] }); // Ensure websocket transport
 
 const Chat = ({ roomId, username }) => {
   const [messages, setMessages] = useState([]); // Store messages

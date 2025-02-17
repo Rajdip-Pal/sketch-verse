@@ -41,7 +41,7 @@ io.on("connection", (socket) => {
         io.to(gameId).emit("update-players", [...lobbies[gameId]]); // Update only relevant room
         io.to(socket.id).emit("update-players", [...lobbies[gameId]]);
     });
-    
+
     socket.on("leave-lobby", ({ socketId, gameId }) => {
         if (!gameId || !lobbies[gameId]) return;
 
@@ -104,6 +104,6 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(5000, () => {
-    console.log("Server is running on port 5000");
+server.listen(process.env.PORT||5000, () => {
+    console.log("Server is running");
 });
