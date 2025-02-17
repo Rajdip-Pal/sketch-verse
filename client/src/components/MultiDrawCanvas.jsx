@@ -3,7 +3,7 @@ import CanvasTool from './CanvasTool';
 import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 
-const socket = io(process.env.SERVER);
+const socket = io('https://sketch-verse.onrender.com', { transports: ['websocket'] });
 
 const Canvas = ({ className, width = 800, height = 500 }) => {
     const { roomId } = useParams();
