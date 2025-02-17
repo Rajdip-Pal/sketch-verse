@@ -21,7 +21,7 @@ const App = () => {
                 <Route path="/singledraw" element={<WebPages.Singledraw />} />
                 <Route path="/multidraw" element={<Navigate to={`/board/${uuidV4()}`} />} />
                 <Route path="/aboutus" element={<WebPages.AboutUs />} />
-                <Route path="/gameareana" element={<WebPages.GameArina />} />
+                <Route path="/gamearena" element={<WebPages.GameArina />} />
                 <Route path="/board/:roomId" element={<WebPages.Multidraw />} />
                 <Route path="/lobby" element={<WebPages.Lobby />} />
             </Routes>
