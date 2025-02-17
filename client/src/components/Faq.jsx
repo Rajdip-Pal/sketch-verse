@@ -5,14 +5,13 @@ export default function Faq() {
     const [expandedFAQ, setExpandedFAQ] = useState(null);
 
     const faqs = [
-        { question: 'How many players can join at max during the game?', answer: 'The game can be played with 10 players at a time.' },
-        // { question: 'Kya aapko mera future dikh raha hai?', answer: 'nahi na mujhe bhi nahi dikh raaha ' },
-        // { question: 'kya rajdip ko iss baar internal mai chinu room se nikal dega ?', answer: 'ji Haan !! dooston koi shaq ismai' },
-        // { question: 'kya ECE wale chutiya hai ?', answer: 'JI ! haaan aap sahi keh rahe hai !!' },
-        // { question: 'melody itni chocolaty kyun hoti hai', answer: 'kya pata bhai' },
-
-        // generate more questions and answers here
-        { question: '', answer: '' },
+        { question: '1. What is SketchVerse?', answer: 'SketchVerse is an interactive multiplayer drawing and guessing game where players take turns drawing a word while others guess it. The faster you guess, the more points you earn!' },
+        { question: '2. How many players can participate in a game?', answer: 'A game session in SketchVerse can have a maximum of 5 players at a time.' },
+        { question: '3. How do I join a game?', answer: 'Enter a username and select an avatar. Click "Join Game", enter a Game ID, and start playing!' },
+        { question: '4. Can I create my own game room?', answer: 'Yes! Click "Create Room", and a unique Game ID will be generated for you. Share this ID with friends to invite them.' },
+        { question: '5. How is the winner determined?', answer: 'The player with the highest score at the end of all rounds wins! Points are awarded based on how quickly you guess the correct word.' },
+        { question: '6. Is SketchVerse free to play?', answer: 'Yes! SketchVerse is completely free to play and enjoy with friends.' },
+        { question: '7. Can I play on mobile?', answer: 'Yes, SketchVerse is optimized for both desktop and mobile devices.' }
     ];
 
     return (
