@@ -2,14 +2,18 @@ import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
 // Initialize socket connection
-const socket = io("http://192.168.0.109:5000"); 
-window.socket = socket; // Make socket accessible in console for debugging
+const socket = io("http://localhost:5000", { transports: ["websocket"] }); // Ensure websocket transport
 
 const Chat = ({ roomId, username }) => {
-  const [messages, setMessages] = useState([]);  // Store messages
-  const [input, setInput] = useState("");  // Store user input
+  const [messages, setMessages] = useState([]); // Store messages
+  const [input, setInput] = useState(""); // Store user input
 
   useEffect(() => {
+    if (!roomId) {
+      console.error("Room ID is missing!");
+      return;
+    }
+
     console.log("Joining room:", roomId);
     socket.emit("join-room", roomId); // Join chat room
 
@@ -19,42 +23,35 @@ const Chat = ({ roomId, username }) => {
       setMessages(loadedMessages || []);
     });
 
-    // Listen for new incoming messages
+    // Listen for new messages
     socket.on("receive-message", (message) => {
-      console.log("Received message from server:", message);
-      if (message?.text?.trim()) {
-        setMessages((prevMessages) => [...prevMessages, message]);
-      }
+      console.log("Received message:", message);
+      setMessages((prevMessages) => [...prevMessages, message]); // Update messages in real-time
     });
 
-    // Cleanup listeners when component unmounts
     return () => {
       socket.off("load-messages");
       socket.off("receive-message");
     };
-  }, [roomId]);
+  }, [roomId]); // Ensure effect runs when `roomId` changes
 
   const sendMessage = () => {
     if (!input.trim()) {
       console.warn("Cannot send an empty message");
-      return; // Prevent sending empty messages
+      return;
     }
 
-    const messageData = { text: input.trim(), sender: username, roomId };
+    const messageData = { message: input.trim(), sender: username, roomId };
 
     console.log("Sending message:", messageData);
 
-    socket.emit("send-message", messageData); // Send message to server
-
-    // Update UI immediately (optimistic update)
-    setMessages((prevMessages) => [...prevMessages, messageData]);
-
+    socket.emit("send-message", messageData); // Send to server
     setInput(""); // Clear input after sending
   };
 
   return (
     <div className="fixed bottom-10 right-4 w-1/4 h-3/4 bg-gray-900 text-white flex flex-col rounded-t-lg shadow-lg">
-      {/* Chat messages display */}
+      {/* Chat messages */}
       <div className="flex-1 overflow-auto p-2 space-y-2">
         {messages.length === 0 ? (
           <p className="text-gray-400 text-center">No messages yet</p>
