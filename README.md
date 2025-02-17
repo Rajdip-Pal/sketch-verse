@@ -1,4 +1,4 @@
-# HackWars - A Multiplayer Drawing & Guessing Game
+# Sketch Verse - A Multiplayer Drawing & Guessing Game
 
 Welcome to **HackWars**! This is a multiplayer game where players can draw and guess words. It features two main modes: drawing mode and jamming mode. The goal is to guess the word based on the drawing, earning points for correct guesses.
 
