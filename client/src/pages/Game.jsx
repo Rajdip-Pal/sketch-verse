@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import * as Navbar from "../components/Navbar";
@@ -59,7 +59,7 @@ export default function Game() {
       alert("Please enter a game ID!");
       return;
     }
-    navigate(`/gamearena?gameId=${gameId}`);
+    navigate(`/gamearena?roomId=${gameId}&username=${username}&avatar=${encodeURIComponent(avatar)}`);
   };
 
   const buildAvatars = (images, size) => {
