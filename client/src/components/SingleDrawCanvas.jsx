@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import CanvasTool from './CanvasTool';
 
-const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500, darkMode = false }) => {
+const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500 }) => {
+    const [darkMode, setDarkMode] = useState(false);
     const [isDrawing, setIsDrawing] = useState(false);
-    const [penColor, setPenColor] = useState(darkMode ? 'white' : 'black');
-    const [penWidth, setPenWidth] = useState(5);
+    const [penColor, setPenColor] = useState(darkMode ? '#FFFFFF' : '#000000');
+    const [penWidth, setPenWidth] = useState(10);
     const [history, setHistory] = useState([]);
     const [step, setStep] = useState(-1);
     const [tool, setTool] = useState('pen');
@@ -36,7 +37,7 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = darkMode ? 'black' : 'white';
+        ctx.fillStyle = darkMode ? '#23272f' : 'white';
         ctx.fillRect(0, 0, width, height);
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
@@ -50,6 +51,10 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
             restoreCanvas(savedHistory[savedStep]);
         }
     }, [darkMode, width, height, localStorageId, restoreCanvas]);
+
+    useEffect(() => {
+        setPenColor(darkMode ? '#FFFFFF' : '#000000');
+    }, [darkMode]);
 
     const startDrawing = e => {
         const { offsetX, offsetY } = e.nativeEvent;
@@ -65,7 +70,7 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
         const { offsetX, offsetY } = e.nativeEvent;
         const ctx = ctxRef.current;
 
-        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#FFFFFF') : penColor;
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#23272f') : penColor;
         ctx.lineWidth = tool === 'eraser' ? 20 : penWidth;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
@@ -105,20 +110,16 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
     };
 
     const resetCanvas = () => {
-        // Clear the canvas
-        ctxRef.current.fillStyle = darkMode ? 'black' : 'white';
+        ctxRef.current.fillStyle = darkMode ? '#23272f' : 'white';
         ctxRef.current.fillRect(0, 0, width, height);
-
-        // Remove drawing history
         setHistory([]);
         setStep(-1);
-        // Remove local storage history
         localStorage.removeItem(`${localStorageId}History`);
         localStorage.removeItem(`${localStorageId}Step`);
     };
 
     return (
-        <div className={` ${className} flex justify-center items-center`}>
+        <div className={` ${className} flex justify-center items-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
             <CanvasTool
                 className="absolute top-0 z-5"
                 tool={tool}
@@ -130,9 +131,10 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
                 undo={undo}
                 redo={redo}
                 resetCanvas={resetCanvas}
+                darkModeToggle={() => setDarkMode(!darkMode)}
             />
             <canvas
-                className={`${className} border shadow-lg`}
+                className={`${className} border shadow-lg ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
                 ref={canvasRef}
                 width={width}
                 height={height}

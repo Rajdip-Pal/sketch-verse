@@ -6,7 +6,7 @@ export const Singledraw = function () {
         document.title = 'Sketch Verse | Draw';
     });
 
-    return <SingleDrawCanvas localStorageId="singleDraw" className="overflow-hidden" width={window.innerWidth} height={window.innerHeight} />;
+    return <SingleDrawCanvas localStorageId="singleDraw" className="h-screen w-screen" width={window.innerWidth} height={window.innerHeight} />;
 };
 
 export default Singledraw;

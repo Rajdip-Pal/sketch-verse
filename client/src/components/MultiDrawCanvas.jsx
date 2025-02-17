@@ -5,11 +5,12 @@ import { useParams } from 'react-router-dom';
 
 const socket = io(process.env.SERVER);
 
-const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode = false }) => {
+const Canvas = ({ className, width = 800, height = 500 }) => {
     const { roomId } = useParams();
+    const [darkMode, setDarkMode] = useState(false);
     const [isDrawing, setIsDrawing] = useState(false);
-    const [penColor, setPenColor] = useState(darkMode ? 'white' : 'black');
-    const [penWidth, setPenWidth] = useState(5);
+    const [penColor, setPenColor] = useState(darkMode ? '#FFFFFF' : '#23272f');
+    const [penWidth, setPenWidth] = useState(10);
     const [history, setHistory] = useState([]);
     const [step, setStep] = useState(-1);
     const [tool, setTool] = useState('pen');
@@ -41,7 +42,8 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = darkMode ? 'black' : 'white';
+        ctx.fillStyle = darkMode ? '#23272f' : 'white';
+        setPenColor(darkMode ? '#FFFFFF' : '#23272f');
         ctx.fillRect(0, 0, width, height);
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
@@ -52,31 +54,37 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
         socket.on('draw', ({ x, y, prevX, prevY, color, width }) => {
             ctxRef.current.strokeStyle = color;
             ctxRef.current.lineWidth = width;
-            drawLine(ctxRef.current, prevX, prevY, x, y);
+            ctxRef.current.beginPath();
+            ctxRef.current.moveTo(prevX, prevY);
+            ctxRef.current.lineTo(x, y);
+            ctxRef.current.stroke();
         });
 
-        const savedHistory = JSON.parse(localStorage.getItem(`${localStorageId}History`)) || [];
-        const savedStep = JSON.parse(localStorage.getItem(`${localStorageId}Step`)) || -1;
-        setHistory(savedHistory);
-        setStep(savedStep);
+        try {
+            const savedHistory = JSON.parse(localStorage.getItem(`${roomId}History`)) || [];
+            const savedStep = JSON.parse(localStorage.getItem(`${roomId}Step`)) || -1;
+            setHistory(savedHistory);
+            setStep(savedStep);
+            if (savedHistory.length > 0 && savedStep >= 0) {
+                restoreCanvas(savedHistory[savedStep]);
+            }
+        } catch (error) {
+            console.error('Failed to load from localStorage', error);
+        }
 
         socket.on('reset-canvas', () => {
-            ctxRef.current.fillStyle = darkMode ? 'black' : 'white';
+            ctxRef.current.fillStyle = darkMode ? '#23272f' : 'white';
             ctxRef.current.fillRect(0, 0, width, height);
             setHistory([]);
             setStep(-1);
-            localStorage.removeItem(`${localStorageId}History`);
-            localStorage.removeItem(`${localStorageId}Step`);
+            localStorage.removeItem(`${roomId}History`);
+            localStorage.removeItem(`${roomId}Step`);
         });
-
-        if (savedHistory.length > 0 && savedStep >= 0) {
-            restoreCanvas(savedHistory[savedStep]);
-        }
 
         return () => {
             socket.off('draw');
         };
-    }, [darkMode, width, height, roomId, localStorageId, restoreCanvas]);
+    }, [darkMode, width, height, roomId, restoreCanvas]);
 
     const startDrawing = e => {
         const { offsetX, offsetY } = e.nativeEvent;
@@ -92,8 +100,8 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
         const { offsetX, offsetY } = e.nativeEvent;
         const ctx = ctxRef.current;
 
-        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#FFFFFF') : penColor;
-        ctx.lineWidth = tool === 'eraser' ? 20 : penWidth;
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#23272f') : penColor;
+        ctx.lineWidth = penWidth;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
@@ -123,11 +131,15 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
     };
 
     const saveHistory = () => {
-        const newHistory = [...history.slice(0, step + 1), canvasRef.current.toDataURL()];
-        setHistory(newHistory);
-        setStep(newHistory.length - 1);
-        localStorage.setItem(`${localStorageId}History`, JSON.stringify(newHistory));
-        localStorage.setItem(`${localStorageId}Step`, JSON.stringify(newHistory.length - 1));
+        try {
+            const newHistory = [...history.slice(0, step + 1), canvasRef.current.toDataURL()];
+            setHistory(newHistory);
+            setStep(newHistory.length - 1);
+            localStorage.setItem(`${roomId}History`, JSON.stringify(newHistory));
+            localStorage.setItem(`${roomId}Step`, JSON.stringify(newHistory.length - 1));
+        } catch (error) {
+            console.error('Failed to save to localStorage', error);
+        }
     };
 
     const undo = () => {
@@ -144,7 +156,7 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
 
     const resetCanvas = () => {
         // Clear the canvas
-        ctxRef.current.fillStyle = darkMode ? 'black' : 'white';
+        ctxRef.current.fillStyle = darkMode ? '#23272f' : 'white';
         ctxRef.current.fillRect(0, 0, width, height);
 
         // Remove drawing history
@@ -157,8 +169,8 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
         });
 
         // Remove local storage history
-        localStorage.removeItem(`${localStorageId}History`);
-        localStorage.removeItem(`${localStorageId}Step`);
+        localStorage.removeItem(`${roomId}History`);
+        localStorage.removeItem(`${roomId}Step`);
     };
 
     return (
@@ -174,6 +186,7 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
                 undo={undo}
                 redo={redo}
                 resetCanvas={resetCanvas}
+                darkModeToggle={() => setDarkMode(!darkMode)}
             />
             <canvas
                 className={`${className} border shadow-lg`}

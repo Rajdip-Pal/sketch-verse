@@ -3,10 +3,10 @@ import MultiDrawCanvas from '../components/MultiDrawCanvas';
 
 const Multidraw = () => {
     React.useEffect(() => {
-        document.title = 'Sketch Verse | Draw';
+        document.title = 'Sketch Verse | Draw Together';
     }, []);
 
-    return <MultiDrawCanvas localStorageId="multiDraw" width={window.innerWidth} height={window.innerHeight} darkMode={true} />;
+    return <MultiDrawCanvas className="h-screen w-screen" width={window.innerWidth} height={window.innerHeight} />;
 };
 
 export default Multidraw;
