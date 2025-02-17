@@ -1,7 +1,7 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const cors = require('cors');
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
 
 const app = express();
 const server = http.createServer(app);
@@ -13,31 +13,54 @@ const io = new Server(server, {
 });
 
 app.use(cors());
+app.use(express.json());
 
-io.on('connection', socket => {
-    console.log('A user connected');
+const rooms = {}; // Stores drawing history and chat messages for each room
 
-    // Join a specific room based on URL param
-    socket.on('join-room', roomId => {
-        socket.join(roomId);
-        console.log(`User joined room: ${roomId}`);
-    });
+io.on("connection", (socket) => {
+  socket.on("join-room", (roomId) => {
+    socket.join(roomId);
+    console.log(`User ${socket.id} joined room ${roomId}`);
+    
+    if (!rooms[roomId]) {
+      rooms[roomId] = { drawings: [], messages: [] };
+    }
 
-    // Broadcast drawing to users in the same room
-    socket.on('draw', ({ roomId, x, y, prevX, prevY, color, width }) => {
-        socket.to(roomId).emit('draw', { x, y, prevX, prevY, color, width });
-    });
+    // Send existing data to the newly joined user
+    socket.emit("load-canvas", rooms[roomId].drawings);
+    socket.emit("load-messages", rooms[roomId].messages);
+  });
 
-    // Broadcast reset-canvas event to all users in the room
-    socket.on('reset-canvas', data => {
-        socket.to(data.roomId).emit('reset-canvas');
-    });
+  socket.on("draw", ({ roomId, x, y, prevX, prevY, color, width }) => {
+    if (!rooms[roomId]) return;
+    
+    rooms[roomId].drawings.push({ x, y, prevX, prevY, color, width });
+    socket.to(roomId).emit("draw", { x, y, prevX, prevY, color, width });
+  });
 
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    });
+  socket.on("clear-canvas", (roomId) => {
+    if (rooms[roomId]) rooms[roomId].drawings = [];
+    io.to(roomId).emit("clear-canvas");
+  });
+
+  socket.on("send-message", ({ roomId, message, sender }) => {
+    console.log(`Received message${message} from ${sender} in room${roomId}`);
+    if (!roomId) return;
+
+    const newMessage = { text: message, sender };
+    
+    // Save message in room
+    rooms[roomId].messages.push(newMessage);
+
+    // Broadcast message to all users in the room
+    io.to(roomId).emit("receive-message", newMessage);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected", socket.id);
+  });
 });
 
 server.listen(5000, () => {
-    console.log('Server running on port 5000');
+  console.log("Server is running on port 5000");
 });

@@ -1,14 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 
-const usernames = ["chudayu"]; // Single predefined username
+const socket = io("http://192.168.0.109:5000");
 
-const Chat = () => {
+const Chat = ({roomId,username,avatar}) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
+  useEffect(() => {  
+  console.log("Joining room:", roomId);
+  socket.emit("join-room", roomId);  
+    socket.on("load-messages", (loadedMessages) => {
+      setMessages(loadedMessages);
+    });
+
+    // Listen for new messages
+    socket.on("receive-message", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    return () => {
+      socket.off("load-messages");
+      socket.off("receive-message");
+    };
+  }, []);
+
   const sendMessage = () => {
     if (input.trim()) {
-      setMessages([...messages, { text: input, sender: usernames[0] }]);
+      const messageData = { message: input, sender: username, roomId};
+      socket.emit("send-message", messageData);
+      console.log("Sending message:", messageData);
+      setMessages([...messages, messageData]);
       setInput("");
     }
   };
