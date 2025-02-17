@@ -118,7 +118,7 @@ const Canvas = ({ className, width = 800, height = 500 }) => {
         const { offsetX, offsetY } = e.nativeEvent;
         const ctx = ctxRef.current;
 
-        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#23272f' : '#000000') : penColor;
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#23272f' : '#FFF') : penColor;
         ctx.lineWidth = penWidth;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
@@ -145,7 +145,7 @@ const Canvas = ({ className, width = 800, height = 500 }) => {
         const { x, y } = getTouchPos(canvasRef.current, e);
         const ctx = ctxRef.current;
 
-        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#23272f' : '#000000') : penColor;
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#23272f' : '#FFF') : penColor;
         ctx.lineWidth = penWidth;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';

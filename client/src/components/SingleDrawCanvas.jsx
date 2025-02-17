@@ -103,7 +103,7 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
         const ctx = ctxRef.current; // Get the 2D context
 
         // Set the stroke style based on the tool (pen or eraser)
-        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#23272f') : penColor;
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#23272f' : '#FFF') : penColor;
         ctx.lineWidth = tool === 'eraser' ? 20 : penWidth; // Set the pen width for drawing or erasing
         ctx.lineCap = 'round'; // Set line cap to round for smooth lines
         ctx.lineJoin = 'round'; // Set line join to round for smooth corners
@@ -121,7 +121,7 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
         const ctx = ctxRef.current; // Get the 2D context
 
         // Set the stroke style based on the tool (pen or eraser)
-        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#23272f') : penColor;
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#23272f' : '#FFF') : penColor;
         ctx.lineWidth = penWidth; // Set the pen width for drawing
         ctx.lineCap = 'round'; // Set line cap to round for smooth lines
         ctx.lineJoin = 'round'; // Set line join to round for smooth corners
