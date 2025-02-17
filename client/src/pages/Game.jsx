@@ -43,8 +43,8 @@ export default function Game() {
             alert('Please enter a username!');
             return;
         }
-        navigate(`/lobby?username=${username}&avatar=${encodeURIComponent(avatar)}`);
-    }, [username, avatar, navigate]);
+        navigate(`/lobby?roomId=&username=${username}&avatar=${encodeURIComponent(avatar)}`);
+    };
 
     // Memoized function to handle joining a game
     const joinGame = useCallback(() => {
@@ -52,27 +52,10 @@ export default function Game() {
             alert('Please enter a game ID!');
             return;
         }
-        navigate(`/gamearena?roomId=${gameId}&username=${username}&avatar=${encodeURIComponent(avatar)}`);
-    }, [gameId, username, avatar, navigate]);
-
-    // Function to handle avatar selection
-    const selectAvatar = index => {
-        setSelectedAvatarIndex(index);
-        setAvatar(images[index]);
+        navigate(`/lobby?roomId=${gameId}&username=${username}&avatar=${encodeURIComponent(avatar)}`);
     };
 
-    // Function to render avatar selection grid
-    const buildAvatars = useCallback(() => {
-        // Dynamically adjust size based on screen size
-        let size;
-        if (window.innerWidth < 640) {
-            size = 5; // For small screens (mobile)
-        } else if (window.innerWidth >= 640 && window.innerWidth < 1024) {
-            size = 6; // For medium screens (tablets)
-        } else {
-            size = 7; // For large screens (desktops)
-        }
-
+    const buildAvatars = (images, size) => {
         let avatars = images.map((image, index) => (
             <button key={index} className="border-2 border-transparent" onClick={() => selectAvatar(index)}>
                 <img
