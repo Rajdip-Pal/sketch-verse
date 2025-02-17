@@ -73,8 +73,7 @@ export default function Start() {
             <div className="flex flex-col md:hidden align-middle items-center justify-center">
                 {/* Mobile-friendly heading with motion animation */}
                 <Navbar.FixedTopLeft id="startTop" headline={'Sketch Verse'} path={'/'} />
-
-                <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 160 }} transition={{ duration: 0.5, delay: 0.3, ease: 'easeInOut' }}>
+                <motion.div initial={{ opacity: 0, x: 20, y: 30 }} animate={{ opacity: 1, x: 0, y: 30 }} transition={{ duration: 0.5, delay: 0.3, ease: 'easeInOut' }}>
                     {CardFunctions.buildCards(cardData)}
                 </motion.div>
             </div>
