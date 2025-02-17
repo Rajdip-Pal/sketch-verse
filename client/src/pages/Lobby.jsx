@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import GameCard from "../components/GameCard";
 
-const socket = io("http://localhost:5000"); // Replace with your backend URL
+const socket = io("https://sketch-verse-backend.vercel.app"); // Replace with your backend URL
 
 const Lobby = () => {
   const navigate = useNavigate();
