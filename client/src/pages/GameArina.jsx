@@ -7,7 +7,6 @@ const GameArina = () => {
   const roomId=urlParams.get("roomId")
   const username = urlParams.get("username") || "Anonymous";
   const avatar = decodeURIComponent(urlParams.get("avatar") || "../assets/iconsAvatar/luffy.jpg");
-  console.log("Coming");
   document.title = 'Sketch Verse | Game Arena';
   return (
     <div>

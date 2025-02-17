@@ -16,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 const rooms = {}; // Stores drawing history and chat messages for each room
+let lobbyPlayers=[];
 
 io.on("connection", (socket) => {
   socket.on("join-room", (roomId) => {
@@ -59,7 +60,21 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User disconnected", socket.id);
   });
-});
+  socket.on("join-lobby", ({ username, avatar }) => {
+    const player = { id: socket.id, username, avatar };
+
+    // Add the player only if they are not already in the lobby
+    if (!lobbyPlayers.some((p) => p.id === socket.id)) {
+      lobbyPlayers.push(player);
+    }
+
+    console.log(`Player ${username} joined the lobby.`);
+    io.emit("update-players", lobbyPlayers);
+  });
+    // Remove player from the lobby
+    lobbyPlayers = lobbyPlayers.filter((player) => player.id !== socket.id);
+    io.emit("update-players", lobbyPlayers);
+  });
 
 server.listen(5000, () => {
   console.log("Server is running on port 5000");
