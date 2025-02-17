@@ -95,7 +95,10 @@ export default function Game() {
                             type="text"
                             value={username}
                             onChange={e => {
-                                if (e.target.value.length > 30) alert('Username length should be maximum 30.');
+                                if (e.target.value.length > 20) {
+                                    alert('Username length should be maximum 20.');
+                                    return;
+                                }
                                 setUsername(e.target.value);
                             }}
                             placeholder="Username"
@@ -110,7 +113,13 @@ export default function Game() {
 
                     <div className="flex justify-center my-5">
                         <button
-                            onClick={() => setShowModal(true)}
+                            onClick={() => {
+                                if (!username.trim()) {
+                                    alert('Please enter a username!');
+                                    return;
+                                }
+                                setShowModal(true);
+                            }}
                             className="text-wrap mb-5 px-8 py-2 font-kota text-xl rounded-3xl bg-lime-500 text-black hover:bg-green-700 hover:text-white active:scale-90">
                             Join Game
                         </button>

@@ -56,6 +56,14 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
         setPenColor(darkMode ? '#FFFFFF' : '#000000');
     }, [darkMode]);
 
+    const getTouchPos = (canvas, touchEvent) => {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: touchEvent.touches[0].clientX - rect.left,
+            y: touchEvent.touches[0].clientY - rect.top,
+        };
+    };
+
     const startDrawing = e => {
         const { offsetX, offsetY } = e.nativeEvent;
         ctxRef.current.beginPath();
@@ -63,6 +71,16 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
         setIsDrawing(true);
         lastX.current = offsetX;
         lastY.current = offsetY;
+    };
+
+    const startDrawingTouch = e => {
+        e.preventDefault();
+        const { x, y } = getTouchPos(canvasRef.current, e);
+        ctxRef.current.beginPath();
+        ctxRef.current.moveTo(x, y);
+        setIsDrawing(true);
+        lastX.current = x;
+        lastY.current = y;
     };
 
     const draw = e => {
@@ -78,6 +96,23 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
         drawLine(ctx, lastX.current, lastY.current, offsetX, offsetY);
         lastX.current = offsetX;
         lastY.current = offsetY;
+    };
+
+    const drawTouch = e => {
+        if (!isDrawing) return;
+        e.preventDefault();
+        const { x, y } = getTouchPos(canvasRef.current, e);
+        const ctx = ctxRef.current;
+
+        ctx.strokeStyle = tool === 'eraser' ? (darkMode ? '#000000' : '#23272f') : penColor;
+        ctx.lineWidth = penWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        drawLine(ctx, lastX.current, lastY.current, x, y);
+
+        lastX.current = x;
+        lastY.current = y;
     };
 
     const stopDrawing = () => {
@@ -141,7 +176,11 @@ const SingleDrawCanvas = ({ className, localStorageId, width = 800, height = 500
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
                 onMouseUp={stopDrawing}
-                onMouseOut={stopDrawing}></canvas>
+                onMouseOut={stopDrawing}
+                onTouchStart={startDrawingTouch}
+                onTouchMove={drawTouch}
+                onTouchEnd={stopDrawing}
+                onTouchCancel={stopDrawing}></canvas>
         </div>
     );
 };
