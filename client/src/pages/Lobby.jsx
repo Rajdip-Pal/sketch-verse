@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import GameCard from '../components/GameCard';
 
-// Establish socket connection
-const socket = io('https://192.168.0.104:5000');
+const socket = io('https://sketch-verse-backend.vercel.app'); // Replace with your backend URL
 
 const Lobby = () => {
     const navigate = useNavigate();
