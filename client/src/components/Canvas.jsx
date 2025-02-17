@@ -162,7 +162,7 @@ const Canvas = ({ className, localStorageId, width = 800, height = 500, darkMode
     };
 
     return (
-        <div className={` ${className} flex justify-center items-center`}>
+        <div className={` ${className} flex flex-col justify-center items-center`}>
             <CanvasTool
                 className="absolute top-0 z-5"
                 tool={tool}

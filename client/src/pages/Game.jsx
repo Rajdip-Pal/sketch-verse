@@ -90,6 +90,7 @@ export default function Game() {
         return result;
     };
 
+    // Main Function to render
     return (
         <React.Fragment>
             <Navbar.FixedTopRight path="/" headline="Sketch Verse" />

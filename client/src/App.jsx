@@ -6,12 +6,11 @@ import './styles/App.css';
 // Lazy loading components for better performance
 const Home = lazy(() => import('./pages/Home'));
 const Start = lazy(() => import('./pages/Start'));
-const Contact = lazy(() => import('./pages/Contact'));
 const Board = lazy(() => import('./pages/Board'));
 const Game = lazy(() => import('./pages/Game'));
 const Singledraw = lazy(() => import('./pages/Singledraw'));
 const AboutUs = lazy(() => import('./pages/AboutUs'));
-const GameArena = lazy(() => import('./pages/GameArina'));
+const GameArena = lazy(() => import('./pages/GameArena'));
 const Multidraw = lazy(() => import('./pages/Multidraw'));
 const Lobby = lazy(() => import('./pages/Lobby'));
 const LoadingAnimation = lazy(() => import('./components/LoadingAnimation'));
@@ -24,7 +23,6 @@ const App = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/start" element={<Start />} />
                     <Route path="/tour" element={<Navigate to="/start" />} />
-                    <Route path="/contact" element={<Contact />} />
                     <Route path="/whiteboard" element={<Board />} />
                     <Route path="/board" element={<Navigate to="/whiteboard" />} />
                     <Route path="/game" element={<Game />} />
