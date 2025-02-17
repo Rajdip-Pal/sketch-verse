@@ -40,7 +40,7 @@ export default function Board() {
     return (
         <React.Fragment>
             {/* Main container with flexbox for centering and styling */}
-            <div className="hidden md:flex items-center justify-center h-screen text-white relative">
+            <div className="hidden md:flex items-center justify-center h-screen text-white">
                 <div className="text-2xl text-center">
                     {/* Animated heading using Framer Motion */}
                     <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-eater">Sketch Verse</motion.h1>
@@ -54,11 +54,10 @@ export default function Board() {
 
             {/*  */}
             <div className="flex flex-col md:hidden align-middle items-center justify-center">
-                <div className="text-2xl text-center">
+                <div className="text-center">
                     {/* Animated heading using Framer Motion */}
                     <Navbar.FixedTopLeft id="startTop" headline={'Sketch Verse'} path={'/'} />
-
-                    <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: 160 }} transition={{ duration: 0.5, delay: 0.3, ease: 'easeInOut' }}>
+                    <motion.div initial={{ opacity: 0, x: 20, y: 30 }} animate={{ opacity: 1, x: 0, y: 30 }} transition={{ duration: 0.5, delay: 0.3, ease: 'easeInOut' }}>
                         {CardFunctions.buildCards(cardData)}
                     </motion.div>
                 </div>
