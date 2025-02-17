@@ -49,7 +49,7 @@ export default function Start() {
     // JSX structure for the Start component
     return (
         <React.Fragment>
-            <div className="hidden md:flex items-center justify-center text-white">
+            <div className="hidden md:flex flex-col h-screen items-center justify-center text-white">
                 <div id="startTop" className="text-2xl text-center">
                     {/* Main heading with motion animation */}
                     <motion.div
@@ -70,7 +70,6 @@ export default function Start() {
                     </motion.div>
                 </div>
             </div>
-
             <div className="flex flex-col md:hidden align-middle items-center justify-center">
                 {/* Mobile-friendly heading with motion animation */}
                 <Navbar.FixedTopLeft id="startTop" headline={'Sketch Verse'} path={'/'} />

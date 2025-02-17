@@ -40,7 +40,7 @@ export default function Board() {
     return (
         <React.Fragment>
             {/* Main container with flexbox for centering and styling */}
-            <div className="hidden md:flex items-center justify-center h-screen text-white relative">
+            <div className="hidden md:flex items-center justify-center h-screen text-white">
                 <div className="text-2xl text-center">
                     {/* Animated heading using Framer Motion */}
                     <motion.h1 className="text-6xl text-lime-500 font-bold p-6 font-eater">Sketch Verse</motion.h1>
