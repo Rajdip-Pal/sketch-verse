@@ -7,10 +7,12 @@ import { FaLinkedin, FaGithub } from 'react-icons/fa';
 import * as Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
+// Import image assets
 import Rajdip_Pal from '../assets/contributors/rajdip-pal.jpg';
 import Suvayu_Nandy from '../assets/contributors/suvayu-nandy.jpg';
 import Prajwal_Lakra from '../assets/contributors/prajwal-lakra.jpeg';
 
+// Contributors Details
 const contributors = [
     {
         name: 'Suvayu Nandy',
@@ -32,6 +34,7 @@ const contributors = [
     },
 ];
 
+// Main rendering functions
 function About() {
     useEffect(() => {
         document.title = 'Sketch Verse | About Us';
