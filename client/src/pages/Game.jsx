@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -44,7 +44,7 @@ export default function Game() {
             return;
         }
         navigate(`/lobby?roomId=&username=${username}&avatar=${encodeURIComponent(avatar)}`);
-    };
+    });
 
     // Memoized function to handle joining a game
     const joinGame = useCallback(() => {
@@ -53,7 +53,17 @@ export default function Game() {
             return;
         }
         navigate(`/lobby?roomId=${gameId}&username=${username}&avatar=${encodeURIComponent(avatar)}`);
+    });
+
+    // Function to handle selecting an avatar
+    const selectAvatar = index => {
+        setSelectedAvatarIndex(index);
     };
+
+    // Update avatar when selected avatar index changes
+    useEffect(() => {
+        setAvatar(images[selectedAvatarIndex]);
+    }, [selectedAvatarIndex]);
 
     const buildAvatars = (images, size) => {
         let avatars = images.map((image, index) => (
@@ -78,7 +88,7 @@ export default function Game() {
         }
 
         return result;
-    }, [selectedAvatarIndex]);
+    };
 
     return (
         <React.Fragment>
@@ -95,7 +105,7 @@ export default function Game() {
                     transition={{ duration: 2.5 }}
                     whileHover={{ scale: 1.05, transition: { duration: 0.5 } }}>
                     <h3 className="text-center text-lime-500 font-bold text-3xl mt-5">Choose Avatar :</h3>
-                    <div className="flex flex-col justify-center items-center mt-3 md:5">{buildAvatars()}</div>
+                    <div className="flex flex-col justify-center items-center mt-3 md:5">{buildAvatars(images, 5)}</div>
 
                     <div className="flex items-center justify-center my-5 mx-5">
                         <input
