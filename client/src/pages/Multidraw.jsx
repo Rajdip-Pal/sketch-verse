@@ -1,12 +1,12 @@
 import React from 'react';
-import Canvas from '../components/Canvas';
+import MultiDrawCanvas from '../components/MultiDrawCanvas';
 
 const Multidraw = () => {
     React.useEffect(() => {
         document.title = 'Sketch Verse | Draw';
     }, []);
 
-    return <Canvas localStorageId="multiDraw" width={window.innerWidth} height={window.innerHeight} darkMode={true} />;
+    return <MultiDrawCanvas localStorageId="multiDraw" width={window.innerWidth} height={window.innerHeight} darkMode={true} />;
 };
 
 export default Multidraw;
